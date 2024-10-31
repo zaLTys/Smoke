@@ -26,9 +26,9 @@ public class Startup
 
         services.AddMediatR(mediatrConfig);
 
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-        services.AddValidatorsFromAssembly(applicationAssembly);
+        //services.AddValidatorsFromAssembly(applicationAssembly);
 
         services.AddSwaggerGen(c =>
         {
@@ -39,7 +39,7 @@ public class Startup
 
             c.IncludeXmlComments(presentationDocumentationFilePath);
 
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Web", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Smoke", Version = "v1" });
         });
 
 
