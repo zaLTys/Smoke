@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Domain.Entities.Requests;
 using Domain.Exceptions;
 
 namespace Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
