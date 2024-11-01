@@ -43,7 +43,7 @@ public class Startup
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Smoke", Version = "v1" });
         });
 
-        services.AddScoped<IRequestRepository, InMemoryRequestRepository>();
+        services.AddSingleton<IRequestRepository, InMemoryRequestRepository>();
 
         services.AddHttpClient();
         services.AddScoped<IHttpRequestService, HttpRequestService>();

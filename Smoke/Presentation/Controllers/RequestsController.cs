@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers;
 
 /// <summary>
-/// Represents the deals controller.
+/// Represents the requests controller.
 /// </summary>
-public sealed class SellerDealsController : ApiController
+public sealed class RequestsController : ApiController
 {
     /// <summary>
     /// Creates a new http request on the specified curl request.
@@ -39,9 +39,7 @@ public sealed class SellerDealsController : ApiController
     [FromBody] ExecuteHttpRequest request,
     CancellationToken cancellationToken)
     {
-        var command = request.Adapt<ExecuteHttpRequestCommand>();
-
-        var executionResult = await Sender.Send(command, cancellationToken);
+        var executionResult = await Sender.Send(new ExecuteHttpRequestCommand(request.requestId), cancellationToken);
 
         return Ok(executionResult);
     }

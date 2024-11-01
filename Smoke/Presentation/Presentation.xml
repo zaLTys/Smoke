@@ -14,12 +14,12 @@
             Gets the sender.
             </summary>
         </member>
-        <member name="T:Presentation.Controllers.SellerDealsController">
+        <member name="T:Presentation.Controllers.RequestsController">
             <summary>
-            Represents the deals controller.
+            Represents the requests controller.
             </summary>
         </member>
-        <member name="M:Presentation.Controllers.SellerDealsController.CreateHttpRequest(System.String,System.Threading.CancellationToken)">
+        <member name="M:Presentation.Controllers.RequestsController.CreateHttpRequest(System.String,System.Threading.CancellationToken)">
             <summary>
             Creates a new http request on the specified curl request.
             </summary>
