@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Requests
 {
-    public record AuthRequest : HttpRequest
+    public record AuthRequest : ApiRequest
     {
         public AuthType AuthType { get; init; }
         public object Credentials { get; init; }

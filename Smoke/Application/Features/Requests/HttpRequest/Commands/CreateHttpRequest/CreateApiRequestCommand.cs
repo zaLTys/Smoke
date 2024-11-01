@@ -2,6 +2,5 @@
 
 namespace Application.Features.Requests.HttpRequest.Commands.CreateHttpRequest
 {
-    public record CreateHttpRequestCommand(string Curl) : ICommand<Guid>;
-
+    public record CreateApiRequestCommand(string Curl) : ICommand<Guid>;
 }

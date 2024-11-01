@@ -2,18 +2,18 @@
 
 namespace Application.Features.Requests.HttpRequest.Commands.CreateHttpRequest;
 
-internal sealed class CreateHttpRequestCommandHandler : ICommandHandler<CreateHttpRequestCommand, Guid>
+internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApiRequestCommand, Guid>
 {
     private readonly ICurlParserService _curlParserService;
     private readonly IRequestRepository _requestRepository;
 
-    public CreateHttpRequestCommandHandler(ICurlParserService curlParserService, IRequestRepository requestRepository)
+    public CreateApiRequestCommandHandler(ICurlParserService curlParserService, IRequestRepository requestRepository)
     {
         _curlParserService = curlParserService;
         _requestRepository = requestRepository;
     }
 
-    public async Task<Guid> Handle(CreateHttpRequestCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateApiRequestCommand command, CancellationToken cancellationToken)
     {
         var result = _curlParserService.ParseCurlCommand(command.Curl);
 

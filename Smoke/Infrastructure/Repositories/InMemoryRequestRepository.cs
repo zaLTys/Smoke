@@ -5,9 +5,9 @@ namespace Infrastructure.Repositories
 {
     public class InMemoryRequestRepository : IRequestRepository
     {
-        private readonly ConcurrentDictionary<Guid, HttpRequest> _requests = new();
+        private readonly ConcurrentDictionary<Guid, ApiRequest> _requests = new();
 
-        public Guid Save(HttpRequest httpRequest)
+        public Guid Save(ApiRequest httpRequest)
         {
             if (_requests.TryAdd(httpRequest.Id, httpRequest))
             {
@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public HttpRequest GetById(Guid requestId)
+        public ApiRequest GetById(Guid requestId)
         {
             if (_requests.TryGetValue(requestId, out var request))
             {

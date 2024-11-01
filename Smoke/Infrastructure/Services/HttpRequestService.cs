@@ -11,7 +11,7 @@ public class HttpRequestService : IHttpRequestService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<string> SendRequestAsync(HttpRequest httpRequest)
+    public async Task<string> SendRequestAsync(ApiRequest httpRequest)
     {
         var client = _httpClientFactory.CreateClient();
 

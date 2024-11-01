@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Requests
 {
-    public record HttpRequest
+    public record ApiRequest
     (
         Guid Id,
         string Name,

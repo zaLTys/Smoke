@@ -2,5 +2,5 @@
 
 public interface IHttpRequestService
 {
-    Task<string> SendRequestAsync(HttpRequest httpRequest);
+    Task<string> SendRequestAsync(ApiRequest httpRequest);
 }

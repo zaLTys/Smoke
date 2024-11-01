@@ -19,13 +19,5 @@
             Represents the requests controller.
             </summary>
         </member>
-        <member name="M:Presentation.Controllers.RequestsController.CreateHttpRequest(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Creates a new http request on the specified curl request.
-            </summary>
-            <param name="request">The save curl request.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>The identifier of the newly created http reques.</returns>
-        </member>
     </members>
 </doc>

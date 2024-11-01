@@ -2,6 +2,6 @@
 
 public interface IRequestRepository
 {
-    Guid Save(HttpRequest httpRequest);
-    HttpRequest GetById(Guid requestId);
+    Guid Save(ApiRequest httpRequest);
+    ApiRequest GetById(Guid requestId);
 }
