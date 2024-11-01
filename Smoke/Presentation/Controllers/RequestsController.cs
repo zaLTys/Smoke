@@ -2,6 +2,8 @@
 using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 using Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
+using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
+using Application.Features.Requests.HttpRequest.Queries.GetApiRequestList;
 using Domain.Entities.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +51,30 @@ public sealed class RequestsController : ApiController
     CancellationToken cancellationToken)
     {
         var result = await Sender.Send(new ExecuteApiRequestCommand(id), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id:Guid}")]
+    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetApiRequest(
+    [FromQuery] Guid id,
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new GetApiRequestQuery(id), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet("all")]
+    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetApiRequests(
+    [FromQuery] Guid id,
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new GetApiRequestListQuery(), cancellationToken);
 
         return Ok(result);
     }

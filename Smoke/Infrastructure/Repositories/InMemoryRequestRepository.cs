@@ -31,6 +31,11 @@ namespace Infrastructure.Repositories
             }
         }
 
+        public IEnumerable<ApiRequest> GetAll()
+        {
+            return _requests.Values;
+        }
+
         public ApiRequest Update(ApiRequest request)
         {
             if (_requests.TryGetValue(request.Id, out var existingRequest))
