@@ -2,9 +2,9 @@
 {
     public enum HttpMethodType
     {
-        Get,
-        Post,
-        Put,
-        Delete
+        GET,
+        POST,
+        PUT,
+        DELETE
     }
 }

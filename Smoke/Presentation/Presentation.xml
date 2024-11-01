@@ -19,21 +19,13 @@
             Represents the deals controller.
             </summary>
         </member>
-        <member name="M:Presentation.Controllers.SellerDealsController.GetDealById(System.String,System.Threading.CancellationToken)">
+        <member name="M:Presentation.Controllers.SellerDealsController.CreateHttpRequest(System.String,System.Threading.CancellationToken)">
             <summary>
-            Gets the deal with the specified identifier, if it exists.
+            Creates a new http request on the specified curl request.
             </summary>
-            <param name="dealId">The deal identifier.</param>
+            <param name="request">The save curl request.</param>
             <param name="cancellationToken">The cancellation token.</param>
-            <returns>The deal with the specified identifier, if it exists.</returns>
-        </member>
-        <member name="M:Presentation.Controllers.SellerDealsController.Createdeal(Application.Features.SellerInventory.SellerDeals.Commands.CreateDeal.CreateDealRequest,System.Threading.CancellationToken)">
-            <summary>
-            Creates a new deal based on the specified request.
-            </summary>
-            <param name="request">The create deal request.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>The identifier of the newly created deal.</returns>
+            <returns>The identifier of the newly created http reques.</returns>
         </member>
     </members>
 </doc>

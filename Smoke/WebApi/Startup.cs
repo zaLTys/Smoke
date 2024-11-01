@@ -1,5 +1,6 @@
 using Application.Behaviors;
 using FluentValidation;
+using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using Web.Middleware;
@@ -42,7 +43,11 @@ public class Startup
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Smoke", Version = "v1" });
         });
 
+        services.AddScoped<IRequestRepository, InMemoryRequestRepository>();
 
+        services.AddHttpClient();
+        services.AddScoped<IHttpRequestService, HttpRequestService>();
+        services.AddScoped<ICurlParserService, CurlParserService>();
 
         services.AddTransient<ExceptionHandlingMiddleware>();
     }
