@@ -60,14 +60,16 @@ public class Startup
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web v1"));
         }
 
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
-
         app.UseHttpsRedirection();
+
+        app.UseMiddleware<CurlStringEscapeMiddleware>();
 
         app.UseRouting();
 
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }

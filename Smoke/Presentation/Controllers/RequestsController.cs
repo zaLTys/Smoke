@@ -22,11 +22,9 @@ public sealed class RequestsController : ApiController
         [FromBody] string request,
         CancellationToken cancellationToken)
     {
-        var command = new CreateApiRequestCommand(request);
+        var result = await Sender.Send(new CreateApiRequestCommand(request), cancellationToken);
 
-        var dealId = await Sender.Send(command, cancellationToken);
-
-        return CreatedAtAction(nameof(CreateApiRequest), new { dealId }, dealId);
+        return CreatedAtAction(nameof(CreateApiRequest), new { result }, result);
     }
 
     [HttpPost("update")]
@@ -36,9 +34,7 @@ public sealed class RequestsController : ApiController
     [FromBody] ApiRequest request,
     CancellationToken cancellationToken)
     {
-        var command = new UpdateApiRequestCommand(request);
-
-        var dealId = await Sender.Send(command, cancellationToken);
+        var dealId = await Sender.Send(new UpdateApiRequestCommand(request), cancellationToken);
 
         return CreatedAtAction(nameof(UpdateApiRequest), new { dealId }, dealId);
     }
