@@ -1,7 +1,4 @@
-using Application.Behaviors;
-using FluentValidation;
 using Infrastructure.Repositories;
-using MediatR;
 using Microsoft.OpenApi.Models;
 using Web.Middleware;
 

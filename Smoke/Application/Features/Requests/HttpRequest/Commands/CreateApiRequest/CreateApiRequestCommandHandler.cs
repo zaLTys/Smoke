@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Messaging;
 
-namespace Application.Features.Requests.HttpRequest.Commands.CreateHttpRequest;
+namespace Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 
 internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApiRequestCommand, Guid>
 {

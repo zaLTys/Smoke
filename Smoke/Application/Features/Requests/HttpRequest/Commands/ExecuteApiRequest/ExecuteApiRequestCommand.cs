@@ -2,6 +2,6 @@
 
 namespace Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest
 {
-    public record ExecuteHttpRequestCommand(Guid requestId) : ICommand<string>;
+    public record ExecuteApiRequestCommand(Guid requestId) : ICommand<string>;
 
 }

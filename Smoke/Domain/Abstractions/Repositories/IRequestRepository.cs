@@ -2,6 +2,9 @@
 
 public interface IRequestRepository
 {
-    Guid Save(ApiRequest httpRequest);
+    //Todo Async Await
     ApiRequest GetById(Guid requestId);
+    Guid Save(ApiRequest httpRequest);
+    ApiRequest Update(ApiRequest httpRequest);
+
 }

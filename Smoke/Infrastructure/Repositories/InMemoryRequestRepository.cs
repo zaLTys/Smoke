@@ -30,5 +30,28 @@ namespace Infrastructure.Repositories
                 throw new KeyNotFoundException("The request with the specified ID was not found.");
             }
         }
+
+        public ApiRequest Update(ApiRequest request)
+        {
+            if (_requests.TryGetValue(request.Id, out var existingRequest))
+            {
+                var updatedRequest = existingRequest with
+                {
+                    Name = request.Name ?? existingRequest.Name,
+                    HttpMethod = request.HttpMethod,
+                    Url = request.Url ?? existingRequest.Url,
+                    Headers = request.Headers ?? existingRequest.Headers,
+                    Body = request.Body ?? existingRequest.Body,
+                    ExpectedResponse = request.ExpectedResponse ?? existingRequest.ExpectedResponse,
+                    ModifiedDate = DateTime.UtcNow
+                };
+
+                _requests[request.Id] = updatedRequest;
+                return _requests[request.Id];
+            }
+
+            throw new KeyNotFoundException("No request with the specified ID was found.");
+        }
+
     }
 }

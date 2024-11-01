@@ -1,7 +1,6 @@
 ﻿using Domain.Entities.Requests;
 using Domain.Primitives;
 using System.Text;
-using System.Text.RegularExpressions;
 
 public class CurlParserService : ICurlParserService
 {
