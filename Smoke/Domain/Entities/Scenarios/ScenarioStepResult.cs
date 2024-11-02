@@ -5,7 +5,7 @@
         object Response,
         bool IsSuccess,
         string ErrorMessage,
-        Dictionary<string, object> OutputData
+        Dictionary<string, string> OutputData
     );
 
 }

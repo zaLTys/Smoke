@@ -1,7 +1,6 @@
 ﻿using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
-using Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
+using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
-using Domain.Entities.Requests;
 using Domain.Entities.Scenarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace Presentation.Controllers;
 public sealed class ScenariosController : ApiController
 {
     [HttpPost("create")]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Scenario), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateScenario(
         [FromBody] CreateScenarioRequest request,
@@ -37,20 +36,20 @@ public sealed class ScenariosController : ApiController
     //    return CreatedAtAction(nameof(UpdateApiRequest), new { dealId }, dealId);
     //}
 
-    //[HttpGet("execute")]
-    //[ProducesResponseType(typeof(RequestResult), StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> ExecuteApiRequest(
-    //[FromQuery] Guid id,
-    //CancellationToken cancellationToken)
-    //{
-    //    var result = await Sender.Send(new ExecuteApiRequestCommand(id), cancellationToken);
+    [HttpGet("execute")]
+    [ProducesResponseType(typeof(ExecutionResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ExecuteScenario(
+    [FromQuery] Guid id,
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new ExecuteScenarioCommand(id), cancellationToken);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
     [HttpGet("{id:Guid}")]
-    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Scenario), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetScenarioRequest(
         Guid id,
@@ -72,15 +71,15 @@ public sealed class ScenariosController : ApiController
     //    return Ok(result);
     //}
 
-    //[HttpPost("clone")]
-    //[ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> CloneApiRequest(
-    //[FromQuery] Guid id,
-    //CancellationToken cancellationToken)
-    //{
-    //    var result = await Sender.Send(new CloneApiRequestCommand(id), cancellationToken);
+    [HttpPost("assignStep")]
+    [ProducesResponseType(typeof(Scenario), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AssignStep(
+    [FromBody] AssignStepRequest request,
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new AssignStepCommand(request.RequestId, request.ScenarioId, request.Order), cancellationToken);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 }
