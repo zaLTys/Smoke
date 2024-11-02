@@ -19,5 +19,10 @@
             Represents the requests controller.
             </summary>
         </member>
+        <member name="T:Presentation.Controllers.ScenariosController">
+            <summary>
+            Represents the scenarios controller.
+            </summary>
+        </member>
     </members>
 </doc>

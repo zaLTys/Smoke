@@ -19,10 +19,10 @@ public sealed class RequestsController : ApiController
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateApiRequest(
-        [FromBody] string request,
+        [FromQuery]string name, [FromBody] string request,
         CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new CreateApiRequestCommand(request), cancellationToken);
+        var result = await Sender.Send(new CreateApiRequestCommand(name, request), cancellationToken);
 
         return CreatedAtAction(nameof(CreateApiRequest), new { result }, result);
     }

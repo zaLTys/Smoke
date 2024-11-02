@@ -1,10 +1,12 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Features.Requests.HttpRequest.Commands.CloneApiRequest;
+using Domain.Abstractions.Repositories;
+using Domain.Entities.Requests;
 using Domain.Exceptions;
 
 namespace Application.Features.Requests.HttpRequest.Commands.CloneHttpRequest;
 
-internal sealed class CloneApiRequestCommandHandler : ICommandHandler<CloneApiRequestCommand, Guid>
+internal sealed class CloneApiRequestCommandHandler : ICommandHandler<CloneApiRequestCommand, ApiRequest>
 {
     private readonly IRequestRepository _requestRepository;
 
@@ -13,7 +15,7 @@ internal sealed class CloneApiRequestCommandHandler : ICommandHandler<CloneApiRe
         _requestRepository = requestRepository;
     }
 
-    public async Task<Guid> Handle(CloneApiRequestCommand command, CancellationToken cancellationToken)
+    public async Task<ApiRequest> Handle(CloneApiRequestCommand command, CancellationToken cancellationToken)
     {
         var apiRequest = _requestRepository.GetById(command.Id);
         if (apiRequest == null)

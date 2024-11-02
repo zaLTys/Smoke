@@ -2,5 +2,5 @@
 
 public interface ICurlParserService
 {
-    ApiRequest ParseCurlCommand(string curlCommand);
+    ApiRequest ParseCurlCommand(string name, string curlCommand);
 }

@@ -17,13 +17,6 @@ internal sealed class CreateScenarioCommandHandler : ICommandHandler<CreateScena
 
     public async Task<Scenario> Handle(CreateScenarioCommand command, CancellationToken cancellationToken)
     {
-        var scenario = new Scenario(
-            Guid.NewGuid(),
-            command.Name,
-            new List<ScenarioStep>(),
-            DateTime.UtcNow,
-            DateTime.UtcNow);
-
-        return _scenarioRepository.Save(scenario);
+        return _scenarioRepository.Save(Scenario.Default(command.Name));
     }
 }

@@ -1,17 +1,15 @@
 ﻿using Domain.Entities.Requests;
 using Domain.Primitives;
 using System.Text;
-
 public class CurlParserService : ICurlParserService
 {
-    public ApiRequest ParseCurlCommand(string curlCommand)
+    public ApiRequest ParseCurlCommand(string name, string curlCommand)
     {
         if (string.IsNullOrWhiteSpace(curlCommand))
         {
             throw new ArgumentException("Curl command cannot be null or empty.");
         }
 
-        // Normalize line continuations and remove backslashes
         curlCommand = curlCommand.Replace("\\\n", " ").Replace("\\\r\n", " ").Replace("\\", "");
 
         var tokens = Tokenize(curlCommand);
@@ -26,7 +24,6 @@ public class CurlParserService : ICurlParserService
 
             if (token == "curl")
             {
-                // Skip the curl command
                 continue;
             }
             else if (token == "-X" || token == "--request")
@@ -80,20 +77,16 @@ public class CurlParserService : ICurlParserService
             }
             else if (token.StartsWith("-"))
             {
-                // Handle other options or skip
-                // For simplicity, we skip unknown options
                 continue;
             }
             else
             {
-                // Assume the token is the URL
                 if (url == null)
                 {
                     url = RemoveQuotes(token);
                 }
                 else
                 {
-                    // Multiple URLs or unexpected tokens
                     throw new ArgumentException($"Unexpected token: {token}");
                 }
             }
@@ -104,14 +97,18 @@ public class CurlParserService : ICurlParserService
             throw new ArgumentException("Invalid curl command: URL not found.");
         }
 
-        return new ApiRequest(
-            Id: Guid.NewGuid(),
-            Name: "ParsedRequest",
+        var apiRequestData = new ApiRequestData(
             HttpMethod: method,
             Url: url,
             Headers: headers,
             Body: body,
-            ExpectedResponse: null,
+            ExpectedResponse: null
+        );
+
+        return new ApiRequest(
+            Id: Guid.NewGuid(),
+            Name: name,
+            ApiRequestData: apiRequestData,
             CreatedDate: DateTime.UtcNow,
             ModifiedDate: DateTime.UtcNow
         );
@@ -191,45 +188,4 @@ public class CurlParserService : ICurlParserService
             throw new ArgumentException($"Invalid HTTP method: {method}");
         }
     }
-
-    // Enum for HttpMethodType
-    //public enum HttpMethodType
-    //{
-    //    GET,
-    //    POST,
-    //    PUT,
-    //    DELETE,
-    //    HEAD,
-    //    OPTIONS,
-    //    PATCH
-    //}
-
-    // ApiRequest class definition (assuming properties used in the method)
-    //public class ApiRequest
-    //{
-    //    public Guid Id { get; }
-    //    public string Name { get; }
-    //    public HttpMethodType HttpMethod { get; }
-    //    public string Url { get; }
-    //    public Dictionary<string, string> Headers { get; }
-    //    public string Body { get; }
-    //    public string ExpectedResponse { get; }
-    //    public DateTime CreatedDate { get; }
-    //    public DateTime ModifiedDate { get; }
-
-    //    public ApiRequest(Guid Id, string Name, HttpMethodType HttpMethod, string Url,
-    //        Dictionary<string, string> Headers, string Body, string ExpectedResponse,
-    //        DateTime CreatedDate, DateTime ModifiedDate)
-    //    {
-    //        this.Id = Id;
-    //        this.Name = Name;
-    //        this.HttpMethod = HttpMethod;
-    //        this.Url = Url;
-    //        this.Headers = Headers;
-    //        this.Body = Body;
-    //        this.ExpectedResponse = ExpectedResponse;
-    //        this.CreatedDate = CreatedDate;
-    //        this.ModifiedDate = ModifiedDate;
-    //    }
-    //}
 }

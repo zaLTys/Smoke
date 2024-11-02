@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Domain.Abstractions.Repositories;
 using Domain.Entities.Requests;
 using Domain.Entities.Scenarios;
 using Domain.Exceptions;

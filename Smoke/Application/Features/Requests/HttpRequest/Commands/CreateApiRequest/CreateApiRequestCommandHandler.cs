@@ -17,7 +17,7 @@ internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApi
 
     public async Task<ApiRequest> Handle(CreateApiRequestCommand command, CancellationToken cancellationToken)
     {
-        var result = _curlParserService.ParseCurlCommand(command.Curl);
+        var result = _curlParserService.ParseCurlCommand(command.Name, command.Curl);
 
         return _requestRepository.Save(result);
     }

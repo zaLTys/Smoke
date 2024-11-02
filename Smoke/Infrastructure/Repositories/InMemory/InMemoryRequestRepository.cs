@@ -2,7 +2,7 @@
 using Domain.Entities.Requests;
 using System.Collections.Concurrent;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.InMemory
 {
     public class InMemoryRequestRepository : IRequestRepository
     {
@@ -66,4 +66,5 @@ namespace Infrastructure.Repositories
 
 
     }
+
 }

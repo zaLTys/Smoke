@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequestList;
+using Domain.Abstractions.Repositories;
 using Domain.Entities.Requests;
 
 namespace Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
