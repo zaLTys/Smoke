@@ -1,9 +1,6 @@
-﻿using Application.Features.Requests.HttpRequest.Commands.CloneApiRequest;
-using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
-using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
+﻿using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
-using Application.Features.Requests.HttpRequest.Queries.GetApiRequestList;
 using Domain.Entities.Requests;
 using Domain.Entities.Scenarios;
 using Microsoft.AspNetCore.Http;
@@ -20,10 +17,10 @@ public sealed class ScenariosController : ApiController
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateScenario(
-        [FromBody] string scenarioName,
+        [FromBody] CreateScenarioRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new CreateScenarioCommand(scenarioName), cancellationToken);
+        var result = await Sender.Send(new CreateScenarioCommand(request.Name), cancellationToken);
 
         return CreatedAtAction(nameof(CreateScenario), new { result }, result);
     }
@@ -52,17 +49,17 @@ public sealed class ScenariosController : ApiController
     //    return Ok(result);
     //}
 
-    //[HttpGet("{id:Guid}")]
-    //[ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> GetApiRequest(
-    //    Guid id,
-    //CancellationToken cancellationToken)
-    //{
-    //    var result = await Sender.Send(new GetApiRequestQuery(id), cancellationToken);
+    [HttpGet("{id:Guid}")]
+    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetScenarioRequest(
+        Guid id,
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new GetScenarioQuery(id), cancellationToken);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
     //[HttpGet("all")]
     //[ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]

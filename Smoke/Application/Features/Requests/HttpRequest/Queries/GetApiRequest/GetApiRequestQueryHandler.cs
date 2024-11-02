@@ -15,12 +15,12 @@ internal sealed class GetApiRequestQueryHandler : IQueryHandler<GetApiRequestQue
 
     public async Task<ApiRequest> Handle(GetApiRequestQuery query, CancellationToken cancellationToken)
     {
-        var apiRequest = _requestRepository.GetById(query.Id);
-        if (apiRequest == null)
+        var result = _requestRepository.GetById(query.Id);
+        if (result == null)
         {
             throw new KeyNotFoundException($"ApiRequest with ID {query.Id} was not found.");
         }
 
-        return apiRequest;
+        return result;
     }
 }

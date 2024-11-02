@@ -1,4 +1,5 @@
 ﻿using Domain.Abstractions.Repositories;
+using Domain.Entities.Requests;
 using Domain.Entities.Scenarios;
 using System.Collections.Concurrent;
 
@@ -41,7 +42,6 @@ namespace Infrastructure.Repositories.InMemory
         {
             if (_scenarios.TryGetValue(scenario.Id, out var existingScenario))
             {
-                // Update Scenario fields and create a new instance with 'with' syntax
                 var updatedScenario = existingScenario with
                 {
                     Name = scenario.Name ?? existingScenario.Name,
@@ -54,6 +54,24 @@ namespace Infrastructure.Repositories.InMemory
             }
 
             throw new KeyNotFoundException("No scenario with the specified ID was found.");
+        }
+
+        public Scenario AssignStep(Guid requestId, Guid scenarioId, int order)
+        {
+            if (_scenarios.TryGetValue(scenarioId, out var existingScenario))
+            {
+                var updatedScenario = existingScenario with
+                {
+                    ModifiedDate = DateTime.UtcNow
+                };
+                updatedScenario.Steps.Add(ScenarioStep.Default(requestId, order));
+
+                _scenarios[scenarioId] = updatedScenario;
+                return _scenarios[scenarioId];
+            }
+
+            throw new KeyNotFoundException("No scenario with the specified ID was found.");
+
         }
     }
 
