@@ -4,7 +4,7 @@
     (
         Guid Id,
         string Name,
-        List<Guid> RequestIds,
+        List<ScenarioStep> Steps,
         DateTime CreatedDate,
         DateTime ModifiedDate
     );

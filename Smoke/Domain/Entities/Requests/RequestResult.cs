@@ -1,9 +1,9 @@
-﻿namespace Domain.Entities.Scenarios
+﻿namespace Domain.Entities.Requests
 {
     public record RequestResult
 (
     Guid RequestId,
-    object Response,
+    string Response,
     bool IsSuccess,
     string ErrorMessage
 );

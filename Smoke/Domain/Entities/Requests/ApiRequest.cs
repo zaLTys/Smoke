@@ -6,13 +6,10 @@ namespace Domain.Entities.Requests
     (
         Guid Id,
         string Name,
-        HttpMethodType HttpMethod,
-        string Url,
-        Dictionary<string, string> Headers,
-        string Body,
-        object ExpectedResponse,
+        ApiRequestData ApiRequestData,
         DateTime CreatedDate,
         DateTime ModifiedDate,
         StepType Type = StepType.HttpRequest
     );
+
 }

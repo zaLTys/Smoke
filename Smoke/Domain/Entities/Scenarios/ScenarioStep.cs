@@ -9,6 +9,9 @@ namespace Domain.Entities.Scenarios
         Guid RequestId,
         int Order,
         List<Guid> DependsOn,
-        Dictionary<string, string> Mappings
+        Dictionary<string, string> Mappings,
+        TimeSpan? TimeOut,
+        TimeSpan? DelayAfter
     );
+
 }

@@ -11,30 +11,51 @@ public class HttpRequestService : IHttpRequestService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<string> SendRequestAsync(ApiRequest httpRequest)
+    public async Task<RequestResult> SendRequestAsync(ApiRequest httpRequest)
     {
         var client = _httpClientFactory.CreateClient();
+        var requestData = httpRequest.ApiRequestData;
 
         var requestMessage = new HttpRequestMessage
         {
-            Method = new HttpMethod(httpRequest.HttpMethod.ToString()),
-            RequestUri = new Uri(httpRequest.Url),
+            Method = new HttpMethod(requestData.HttpMethod.ToString()),
+            RequestUri = new Uri(requestData.Url),
         };
 
-        foreach (var header in httpRequest.Headers)
+        foreach (var header in requestData.Headers)
         {
             requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
 
-        if (!string.IsNullOrWhiteSpace(httpRequest.Body) && (httpRequest.HttpMethod == HttpMethodType.POST || httpRequest.HttpMethod == HttpMethodType.PUT))
+        if (!string.IsNullOrWhiteSpace(requestData.Body) &&
+            (requestData.HttpMethod == HttpMethodType.POST || requestData.HttpMethod == HttpMethodType.PUT))
         {
-            requestMessage.Content = new StringContent(httpRequest.Body, Encoding.UTF8, "application/json");
+            requestMessage.Content = new StringContent(requestData.Body, Encoding.UTF8, "application/json");
         }
 
-        using var response = await client.SendAsync(requestMessage);
+        try
+        {
+            using var response = await client.SendAsync(requestMessage);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var isSuccess = response.IsSuccessStatusCode;
 
-        response.EnsureSuccessStatusCode();
-
-        return await response.Content.ReadAsStringAsync();
+            return new RequestResult(
+                RequestId: httpRequest.Id,
+                Response: responseContent,
+                IsSuccess: isSuccess,
+                ErrorMessage: isSuccess ? string.Empty : response.ReasonPhrase ?? "Unknown error"
+            );
+        }
+        catch (Exception ex)
+        {
+            return new RequestResult(
+                RequestId: httpRequest.Id,
+                Response: string.Empty,
+                IsSuccess: false,
+                ErrorMessage: ex.Message
+            );
+        }
     }
+
+
 }

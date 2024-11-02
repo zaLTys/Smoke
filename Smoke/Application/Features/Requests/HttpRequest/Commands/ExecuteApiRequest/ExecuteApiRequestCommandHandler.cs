@@ -1,9 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
+using Domain.Entities.Requests;
+using Domain.Entities.Scenarios;
 using Domain.Exceptions;
 
 namespace Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 
-internal sealed class ExecuteApiRequestCommandHandler : ICommandHandler<ExecuteApiRequestCommand, string>
+internal sealed class ExecuteApiRequestCommandHandler : ICommandHandler<ExecuteApiRequestCommand, RequestResult>
 {
     private readonly IRequestRepository _requestRepository;
     private readonly IHttpRequestService _httpRequestService;
@@ -15,7 +17,7 @@ internal sealed class ExecuteApiRequestCommandHandler : ICommandHandler<ExecuteA
     }
 
 
-    public async Task<string> Handle(ExecuteApiRequestCommand command, CancellationToken cancellationToken)
+    public async Task<RequestResult> Handle(ExecuteApiRequestCommand command, CancellationToken cancellationToken)
     {
         var apiRequest = _requestRepository.GetById(command.requestId);
         if (apiRequest == null)
@@ -23,6 +25,6 @@ internal sealed class ExecuteApiRequestCommandHandler : ICommandHandler<ExecuteA
             throw new RequestNotFoundException(command.requestId);
         }
 
-        return await _httpRequestService.SendRequestAsync(apiRequest);
+        return  await _httpRequestService.SendRequestAsync(apiRequest);
     }
 }

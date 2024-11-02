@@ -1,6 +1,11 @@
 ﻿namespace Domain.Entities.Scenarios
 {
-    internal class ScenarioStepResult
-    {
-    }
+    public record ScenarioStepResult(
+        Guid StepId,
+        object Response,
+        bool IsSuccess,
+        string ErrorMessage,
+        Dictionary<string, object> OutputData
+    );
+
 }

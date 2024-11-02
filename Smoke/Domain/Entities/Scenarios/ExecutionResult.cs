@@ -3,7 +3,7 @@
     public record ExecutionResult
     (
         Guid ScenarioId,
-        List<RequestResult> RequestResults,
+        List<ScenarioStepResult> StepResults,
         DateTime StartTime,
         DateTime EndTime,
         bool IsSuccess,

@@ -4,6 +4,7 @@
     {
         HttpRequest,
         AuthRequest,
-        DbRequest
+        DbRequest, 
+        Wait
     }
 }
