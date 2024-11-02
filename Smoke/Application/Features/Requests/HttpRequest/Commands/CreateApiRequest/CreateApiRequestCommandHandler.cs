@@ -1,8 +1,10 @@
 ﻿using Application.Abstractions.Messaging;
+using Domain.Abstractions.Repositories;
+using Domain.Entities.Requests;
 
 namespace Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 
-internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApiRequestCommand, Guid>
+internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApiRequestCommand, ApiRequest>
 {
     private readonly ICurlParserService _curlParserService;
     private readonly IRequestRepository _requestRepository;
@@ -13,7 +15,7 @@ internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApi
         _requestRepository = requestRepository;
     }
 
-    public async Task<Guid> Handle(CreateApiRequestCommand command, CancellationToken cancellationToken)
+    public async Task<ApiRequest> Handle(CreateApiRequestCommand command, CancellationToken cancellationToken)
     {
         var result = _curlParserService.ParseCurlCommand(command.Curl);
 

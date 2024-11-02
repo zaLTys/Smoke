@@ -8,6 +8,6 @@ namespace Domain.Entities.Requests
     Dictionary<string, string> Headers,
     string Body,
     object ExpectedResponse
-);
+    );
 
 }

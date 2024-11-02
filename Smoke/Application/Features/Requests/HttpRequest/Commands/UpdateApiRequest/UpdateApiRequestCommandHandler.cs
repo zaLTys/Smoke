@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Domain.Abstractions.Repositories;
 using Domain.Entities.Requests;
 using Domain.Exceptions;
 
@@ -21,18 +22,24 @@ internal sealed class UpdateApiRequestCommandHandler : ICommandHandler<UpdateApi
             throw new RequestNotFoundException(command.request.Id);
         }
 
+        var updatedRequestData = apiRequest.ApiRequestData with
+        {
+            HttpMethod = command.request.ApiRequestData.HttpMethod,
+            Url = command.request.ApiRequestData.Url,
+            Headers = command.request.ApiRequestData.Headers,
+            Body = command.request.ApiRequestData.Body,
+            ExpectedResponse = command.request.ApiRequestData.ExpectedResponse
+        };
+
         apiRequest = apiRequest with
         {
             Name = command.request.Name,
-            HttpMethod = command.request.HttpMethod,
-            Url = command.request.Url,
-            Headers = command.request.Headers,
-            Body = command.request.Body,
-            ExpectedResponse = command.request.ExpectedResponse,
+            ApiRequestData = updatedRequestData,
             ModifiedDate = DateTime.UtcNow
         };
 
         _requestRepository.Update(apiRequest);
         return apiRequest;
     }
+
 }

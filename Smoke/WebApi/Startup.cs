@@ -1,3 +1,4 @@
+using Domain.Abstractions.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
 using Web.Middleware;
@@ -41,6 +42,7 @@ public class Startup
         });
 
         services.AddSingleton<IRequestRepository, InMemoryRequestRepository>();
+        services.AddSingleton<IScenarioRepository, Todo>();
 
         services.AddHttpClient();
         services.AddScoped<IHttpRequestService, HttpRequestService>();

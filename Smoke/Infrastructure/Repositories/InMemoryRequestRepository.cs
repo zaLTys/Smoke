@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Requests;
+﻿using Domain.Abstractions.Repositories;
+using Domain.Entities.Requests;
 using System.Collections.Concurrent;
 
 namespace Infrastructure.Repositories
@@ -7,11 +8,11 @@ namespace Infrastructure.Repositories
     {
         private readonly ConcurrentDictionary<Guid, ApiRequest> _requests = new();
 
-        public Guid Save(ApiRequest httpRequest)
+        public ApiRequest Save(ApiRequest apiRequest)
         {
-            if (_requests.TryAdd(httpRequest.Id, httpRequest))
+            if (_requests.TryAdd(apiRequest.Id, apiRequest))
             {
-                return httpRequest.Id;
+                return apiRequest;
             }
             else
             {
@@ -40,14 +41,19 @@ namespace Infrastructure.Repositories
         {
             if (_requests.TryGetValue(request.Id, out var existingRequest))
             {
+                var updatedRequestData = existingRequest.ApiRequestData with
+                {
+                    HttpMethod = request.ApiRequestData.HttpMethod,
+                    Url = request.ApiRequestData.Url ?? existingRequest.ApiRequestData.Url,
+                    Headers = request.ApiRequestData.Headers ?? existingRequest.ApiRequestData.Headers,
+                    Body = request.ApiRequestData.Body ?? existingRequest.ApiRequestData.Body,
+                    ExpectedResponse = request.ApiRequestData.ExpectedResponse ?? existingRequest.ApiRequestData.ExpectedResponse
+                };
+
                 var updatedRequest = existingRequest with
                 {
                     Name = request.Name ?? existingRequest.Name,
-                    HttpMethod = request.HttpMethod,
-                    Url = request.Url ?? existingRequest.Url,
-                    Headers = request.Headers ?? existingRequest.Headers,
-                    Body = request.Body ?? existingRequest.Body,
-                    ExpectedResponse = request.ExpectedResponse ?? existingRequest.ExpectedResponse,
+                    ApiRequestData = updatedRequestData,
                     ModifiedDate = DateTime.UtcNow
                 };
 
@@ -57,6 +63,7 @@ namespace Infrastructure.Repositories
 
             throw new KeyNotFoundException("No request with the specified ID was found.");
         }
+
 
     }
 }

@@ -1,11 +1,8 @@
 ﻿using Domain.Entities.Requests;
 
-public interface IRequestRepository
+namespace Domain.Abstractions.Repositories
 {
-    //Todo Async Await
-    IEnumerable<ApiRequest> GetAll();
-    ApiRequest GetById(Guid requestId);
-    Guid Save(ApiRequest httpRequest);
-    ApiRequest Update(ApiRequest httpRequest);
-
+    public interface IRequestRepository : IRepository<ApiRequest>
+    {
+    }
 }
