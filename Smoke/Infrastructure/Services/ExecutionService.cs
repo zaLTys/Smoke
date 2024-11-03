@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Services;
 using Domain.Abstractions.Repositories;
-using Domain.Entities.Requests;
 using Domain.Entities.Scenarios;
+using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Text;
 
@@ -9,27 +9,32 @@ public class ExecutionService : IExecutionService
 {
     private readonly IRequestRepository _requestRepository;
     private readonly IHttpRequestService _httpRequestService;
+    private readonly IPlaceholderReplacer _placeholderReplacer;
 
-    public ExecutionService(IRequestRepository requestRepository, IHttpRequestService httpRequestService)
+    public ExecutionService(IRequestRepository requestRepository,
+        IHttpRequestService httpRequestService, IPlaceholderReplacer placeholderReplacer)
     {
         _requestRepository = requestRepository;
         _httpRequestService = httpRequestService;
+        _placeholderReplacer = placeholderReplacer;
     }
 
     public async Task<ExecutionResult> ExecuteScenarioAsync(Scenario scenario)
     {
         var startTime = DateTime.UtcNow;
         var stepResults = new ConcurrentDictionary<Guid, ScenarioStepResult>();
-        var stepTasks = new Dictionary<int, Task<ScenarioStepResult>>();
+        var stepTasks = new Dictionary<Guid, Task<ScenarioStepResult>>();
         var logs = new StringBuilder();
 
         var steps = scenario.Steps.OrderBy(s => s.Order).ToList();
 
-        var sharedData = new ConcurrentDictionary<string, object>();
+
+        var sharedData = new ConcurrentDictionary<string, string>();
+        sharedData["asdf"] = "asdfValue";
 
         foreach (var step in steps)
         {
-            stepTasks[step.Order] = ExecuteStepAsync(step, stepTasks, sharedData, logs)
+            stepTasks[step.Id] = ExecuteStepAsync(step, stepTasks, sharedData, logs)
                 .ContinueWith(task =>
                 {
                     stepResults[step.Id] = task.Result;
@@ -54,8 +59,8 @@ public class ExecutionService : IExecutionService
 
     private async Task<ScenarioStepResult> ExecuteStepAsync(
     ScenarioStep step,
-    Dictionary<int, Task<ScenarioStepResult>> stepTasks,
-    ConcurrentDictionary<string, object> sharedData,
+    Dictionary<Guid, Task<ScenarioStepResult>> stepTasks,
+    ConcurrentDictionary<string, string> sharedData,
     StringBuilder logs)
     {
         var dependencyTasks = step.DependsOn?
@@ -74,22 +79,11 @@ public class ExecutionService : IExecutionService
         {
             var apiRequest = _requestRepository.GetById(step.RequestId);
 
-            // Map input data
-            //if (step.Mappings != null)
-            //{
-            //    foreach (var mapping in step.Mappings)
-            //    {
-            //        if (sharedData.TryGetValue(mapping.Key, out var value))
-            //        {
-            //            // Replace placeholders in apiRequest with mapped values
-            //            apiRequest = ApplyMapping(apiRequest, mapping.Value, value);
-            //        }
-            //    }
-            //}
+            var preparedRequest = _placeholderReplacer.ReplacePlaceholders(apiRequest, sharedData);
 
-            var result = await _httpRequestService.SendRequestAsync(apiRequest);
+            var result = await _httpRequestService.SendRequestAsync(preparedRequest);
 
-            var outputData = FormatOutput(result.Response);
+            var outputData = ExtractOutputData(result.Response, step.Mappings);
 
             foreach (var output in outputData)
             {
@@ -172,7 +166,7 @@ public class ExecutionService : IExecutionService
     //    return apiRequest;
     //}
 
-    private Dictionary<string, string> FormatOutput(string responseContent)
+    private Dictionary<string, string> ExtractOutputData(string responseContent, Dictionary<string, string> outputMappings)
     {
         try
         {
@@ -186,6 +180,29 @@ public class ExecutionService : IExecutionService
             return new Dictionary<string, string>();
         }
     }
+
+    //private Dictionary<string, object> ExtractOutputData(string responseContent, Dictionary<string, string> outputMappings)
+    //{
+    //    var outputData = new Dictionary<string, object>();
+    //    if (outputMappings == null || !outputMappings.Any())
+    //    {
+    //        return outputData;
+    //    }
+
+    //    var json = JObject.Parse(responseContent);
+
+    //    foreach (var mapping in outputMappings)
+    //    {
+    //        var token = json.SelectToken(mapping.Value);
+    //        if (token != null)
+    //        {
+    //            outputData[mapping.Key] = token.ToString();
+    //        }
+    //    }
+
+    //    return outputData;
+    //}
+
 
 
 

@@ -1,6 +1,7 @@
 ﻿using Application.Exceptions;
 using Domain.Exceptions.Base;
-using System.Text.Json;
+using Newtonsoft.Json;
+
 
 namespace Web.Middleware;
 
@@ -53,7 +54,7 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
             errors
         };
 
-        await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+        await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(response));
     }
 
     private record ApiError(string PropertyName, string ErrorMessage);

@@ -1,6 +1,7 @@
 using Application.Abstractions.Services;
 using Domain.Abstractions.Repositories;
 using Infrastructure.Repositories.InMemory;
+using Infrastructure.Services;
 using Microsoft.OpenApi.Models;
 using Web.Middleware;
 
@@ -49,6 +50,7 @@ public class Startup
         services.AddScoped<IHttpRequestService, HttpRequestService>();
         services.AddScoped<ICurlParserService, CurlParserService>();
         services.AddScoped<IExecutionService, ExecutionService>();
+        services.AddScoped<IPlaceholderReplacer, PlaceholderReplacer>();
 
         services.AddTransient<ExceptionHandlingMiddleware>();
     }

@@ -6,8 +6,8 @@ namespace Domain.Entities.Requests
     HttpMethodType HttpMethod,
     string Url,
     Dictionary<string, string> Headers,
-    string Body,
-    object ExpectedResponse
+    string? Body,
+    object? ExpectedResponse
     );
 
 }
