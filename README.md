@@ -21,3 +21,13 @@ The application follows the Clean Architecture pattern, promoting separation of 
 - Infrastructure Layer: Contains implementations of interfaces, data access, and external services.
 - Presentation Layer (API): Contains the API controllers and models.
 - Testing Layer: Contains unit and integration tests. (TBA)
+
+Registration:
+![image](https://github.com/user-attachments/assets/06cf6fca-4a61-4975-a034-a37a8cd7d648)
+
+Execution:
+![image](https://github.com/user-attachments/assets/906341d3-58b8-4009-b935-4d255a615ef2)
+
+Structure:
+
+![image](https://github.com/user-attachments/assets/8eb92d0f-65ce-4206-8ed6-b9ac1e75f8c9)
