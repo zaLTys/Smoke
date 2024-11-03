@@ -3,8 +3,7 @@ Sandbox project, the ideas:
 
 Smoke an application, designed to execute and evaluate multiple API smoke tests on demand. 
 Users can provide cURL requests, save them, and specify expected data. 
-These requests are saved in persistence layer and can be used with HTTP clients. 
-Requests can be chained together to create complex scenarios where multiple APIs are called, and results are evaluated.
+These requests can be chained and manipulated together to create complex scenarios where multiple APIs are called, and results are evaluated.
 
 Planned Features:
 - API Request Management: Create, update, and manage HTTP requests, including support for authorization and authentication.
