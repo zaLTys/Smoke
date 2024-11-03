@@ -20,7 +20,7 @@ public class ExecutionService : IExecutionService
     {
         var startTime = DateTime.UtcNow;
         var stepResults = new ConcurrentDictionary<Guid, ScenarioStepResult>();
-        var stepTasks = new Dictionary<Guid, Task<ScenarioStepResult>>();
+        var stepTasks = new Dictionary<int, Task<ScenarioStepResult>>();
         var logs = new StringBuilder();
 
         var steps = scenario.Steps.OrderBy(s => s.Order).ToList();
@@ -29,7 +29,7 @@ public class ExecutionService : IExecutionService
 
         foreach (var step in steps)
         {
-            stepTasks[step.Id] = ExecuteStepAsync(step, stepTasks, sharedData, logs)
+            stepTasks[step.Order] = ExecuteStepAsync(step, stepTasks, sharedData, logs)
                 .ContinueWith(task =>
                 {
                     stepResults[step.Id] = task.Result;
@@ -54,7 +54,7 @@ public class ExecutionService : IExecutionService
 
     private async Task<ScenarioStepResult> ExecuteStepAsync(
     ScenarioStep step,
-    Dictionary<Guid, Task<ScenarioStepResult>> stepTasks,
+    Dictionary<int, Task<ScenarioStepResult>> stepTasks,
     ConcurrentDictionary<string, object> sharedData,
     StringBuilder logs)
     {

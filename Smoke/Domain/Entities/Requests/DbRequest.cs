@@ -6,11 +6,19 @@ namespace Domain.Entities.Requests
     (
         Guid Id,
         string Name,
-        DbType DbType,
-        string ConnectionString,
-        string Query,
-        Dictionary<string, object> Parameters,
-        object ExpectedResult,
+        DbRequestData DbRequestData,
+        DateTime CreatedDate,
+        DateTime ModifiedDate,
         StepType Type = StepType.DbRequest
     );
+
+    public record DbRequestData
+(
+    DbType DbType,
+    string ConnectionString,
+    string Query,
+    Dictionary<string, object> Parameters,
+    object ExpectedResult
+);
+
 }

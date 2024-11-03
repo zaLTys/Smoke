@@ -4,6 +4,7 @@ using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 using Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequestList;
+using Application.Features.SellerInventory.SellerDeals.Commands.CreateDeal;
 using Domain.Entities.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,14 +40,14 @@ public sealed class RequestsController : ApiController
         return CreatedAtAction(nameof(UpdateApiRequest), new { dealId }, dealId);
     }
 
-    [HttpGet("execute")]
+    [HttpPost("execute")]
     [ProducesResponseType(typeof(RequestResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ExecuteApiRequest(
-    [FromQuery] Guid id,
+    [FromBody] ExecuteApiRequest request,
     CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new ExecuteApiRequestCommand(id), cancellationToken);
+        var result = await Sender.Send(new ExecuteApiRequestCommand(request.requestId), cancellationToken);
 
         return Ok(result);
     }
