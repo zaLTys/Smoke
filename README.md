@@ -19,6 +19,7 @@ These requests can be chained and manipulated together to create complex scenari
 # Challenges
 - Authorization requests (pipeline to retrieve tokens or reuse browser cookies)
 - Security (request content encryption in case of password, connection string, api secrets or similar data)
+- Exposure - network restrictions/limits for deployed application
 
 # Structure
 The application follows the Clean Architecture pattern, promoting separation of concerns and scalability. It is divided into several layers:
