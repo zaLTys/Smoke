@@ -14,6 +14,10 @@ Planned Features:
 - Result Evaluation: Validate actual responses against expected data and collect execution results.
 - Integration with GitHub Actions: Easily integrate scenario execution into your deployment workflows by simply calling scenario execution url.
 
+Challenges:
+- Authorization requests (pipeline to retrieve tokens or reuse browser cookies)
+- Security (request content encryption in case of password, connection string, api secrets or similar data)
+
 The application follows the Clean Architecture pattern, promoting separation of concerns and scalability. It is divided into several layers:
 - Domain Layer: Contains the core business logic and entities.
 - Application Layer: Contains application-specific logic, use cases, and interfaces.
