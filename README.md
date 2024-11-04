@@ -2,7 +2,9 @@
 Sandbox project, the idea:
 
 An application, designed to execute and evaluate multiple API smoke tests on demand. 
+
 Users can provide cURL, database requests, save them, add placeholders to be dynamically changed, and specify expected data. 
+
 These requests can be chained and manipulated together to create complex scenarios where multiple APIs are called, and results are evaluated.
 
 Planned Features:
