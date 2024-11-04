@@ -7,7 +7,7 @@ Users can provide cURL, database requests, save them, add placeholders to be dyn
 
 These requests can be chained and manipulated together to create complex scenarios where multiple APIs are called, and results are evaluated.
 
-Planned Features:
+# Planned Features
 - API Request Management: Create, update, and manage HTTP requests, including support for authorization and authentication.
 - Scenario Building: Chain multiple requests into scenarios with ordered steps, dependencies, and data mappings.
 - Authorization Support: Integrate with identity servers to obtain and manage tokens for authorized requests.
@@ -16,10 +16,11 @@ Planned Features:
 - Result Evaluation: Validate actual responses against expected data and collect execution results.
 - Integration with GitHub Actions: Easily integrate scenario execution into your deployment workflows by simply calling scenario execution url.
 
-Challenges:
+# Challenges
 - Authorization requests (pipeline to retrieve tokens or reuse browser cookies)
 - Security (request content encryption in case of password, connection string, api secrets or similar data)
 
+# Structure
 The application follows the Clean Architecture pattern, promoting separation of concerns and scalability. It is divided into several layers:
 - Domain Layer: Contains the core business logic and entities.
 - Application Layer: Contains application-specific logic, use cases, and interfaces.
@@ -28,6 +29,7 @@ The application follows the Clean Architecture pattern, promoting separation of 
 - Presentation Layer (UI): Contains control mechanisms and visual request and scenario building (TBA)
 - Testing Layer: Contains unit and integration tests. (TBA)
 
+# Overview
 Registration:
 ![image](https://github.com/user-attachments/assets/06cf6fca-4a61-4975-a034-a37a8cd7d648)
 
