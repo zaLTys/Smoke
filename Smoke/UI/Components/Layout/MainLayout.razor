@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Color="Color.Primary" Class="ml-3">UI</MudText>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudMenu FullWidth="false">
+                    <ActivatorContent>
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.MoreVert" Size="Size.Small" DisableElevation="true" />
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudButtonGroup Color="Color.Info" Variant="Variant.Text" VerticalAlign="true">
+                            <MudButton Style="width: auto;" StartIcon="@Icons.Material.Outlined.DarkMode" @onclick="ToggleDarkMode">Light / Dark</MudButton>
+                            <MudButton StartIcon="@Icons.Material.Filled.Logout" OnClick="Logout">Logout</MudButton>
+                        </MudButtonGroup>
+                    </ChildContent>
+                </MudMenu>
+            </Authorized>
+        </AuthorizeView>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-2">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<BlazoredToasts Position="ToastPosition.BottomRight" Timeout="5" MaxToastCount="3" ShowCloseButton="true" />

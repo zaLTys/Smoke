@@ -1,0 +1,29 @@
+﻿@using UI.Components.Loader
+
+@if (!HasState)
+{
+    @ChildContent
+}
+else
+{
+    @switch (State)
+    {
+        case LoadingState.Loaded:
+            @ChildContent
+            break;
+        case LoadingState.Error:
+            @if (!string.IsNullOrEmpty(@OnErrorRedirectTo))
+            {
+                RedirectTo();
+            }
+            else
+            {
+                <ErrorCard ErrorMessage=@ErrorMessage></ErrorCard>
+            }
+            break;
+        default:
+            //loading
+            <div class="pbar-container"><div class="pbar"><div class="pbar-value"></div></div></div>
+            break;
+    }
+}

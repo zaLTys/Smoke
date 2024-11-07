@@ -1,0 +1,18 @@
+﻿@if (!String.IsNullOrEmpty(ErrorMessage))
+{
+    <MudPaper Class="pa-4">
+        <MudGrid>
+            <MudItem xs="12" sm="12">
+                <MudText>Error occured:</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="12">
+                <MudText Typo="Typo.body2" Style="word-wrap: break-word;">@ErrorMessage</MudText>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+}
+
+@code {
+    [Parameter]
+    public string ErrorMessage { get; set; } = string.Empty;
+}
