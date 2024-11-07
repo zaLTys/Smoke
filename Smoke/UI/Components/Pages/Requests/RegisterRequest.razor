@@ -1,0 +1,83 @@
+﻿@page "/requests"
+@using UI.Components.Loader
+@using UI.ViewModels.Requests
+@inherits DataLoader
+
+
+<Content State="@State" ErrorMessage="@ErrorMessage">
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="6" md="6" lg="6">
+                <MudPaper Class="pa-4 my-2" Style="width:100%;">
+                    <MudText Typo="Typo.h6">Register request</MudText>
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField Label="Name" @bind-Value="RequestToRegister.Name"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField Label="Curl" @bind-Value="RequestToRegister.Curl" Lines="15"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudButton Variant="Variant.Outlined"
+                                       ButtonType="ButtonType.Submit"
+                                       StartIcon="@Icons.Material.Filled.Check"
+                                       DisableElevation="true"
+                                       Size="Size.Small"
+                                       Style="background-color: darkorange; min-width: 150px;"
+                                       Color="Color.Primary"
+                                       OnClick="Execute">
+                                Execute
+                            </MudButton>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudButton Variant="Variant.Outlined"
+                                       ButtonType="ButtonType.Submit"
+                                       StartIcon="@Icons.Material.Filled.Check"
+                                       DisableElevation="true"
+                                       Size="Size.Small"
+                                       Style="background-color: white; min-width: 150px;"
+                                       Color="Color.Primary"
+                                       OnClick="HandleRegister">
+                                Register
+                            </MudButton>
+                        </MudItem>
+
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+
+            <!-- Second Column: Requests List -->
+            <MudItem xs="12" sm="6" md="6" lg="6">
+                <MudPaper Class="pa-4 my-2" Style="width:100%;">
+                    <MudText Typo="Typo.h6">Requests List Or parameters TBD</MudText>
+                    <MudList T="ApiRequestViewModel">
+                        @foreach (var request in Requests)
+                        {
+                            <MudListItem>
+                                <MudText>@request.Name</MudText>
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudPaper>
+            </MudItem>
+
+
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudPaper Class="pa-4 my-2" Style="width:100%; height: 100%;">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h6">Execution Result</MudText>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField Label="Result"
+                                          @bind-Value="ExecutionResult"
+                                          Lines="10"
+                                          Style="width: 100%; height: 100%;"
+                                          ReadOnly="true" />
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</Content>

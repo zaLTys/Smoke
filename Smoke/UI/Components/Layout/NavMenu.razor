@@ -1,0 +1,14 @@
+﻿<MudNavMenu Rounded="true" Color="Color.Secondary" Bordered="true" Margin="Margin.Normal" Class="pa-2">
+    <AuthorizeView>
+        <NotAuthorized>
+            <MudNavLink Icon="@Icons.Material.Filled.Login" Href="/" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+        </NotAuthorized>
+        <Authorized>
+            <MudNavLink Href="" Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All">Home</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.ReadMore" Href="/requests" Match="NavLinkMatch.Prefix">Requests</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Group" Href="/scenarios" Match="NavLinkMatch.Prefix">Scenarios</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.FolderOpen" Href="/scenariomanagement" Match="NavLinkMatch.Prefix">Scenario Management</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+</MudNavMenu>
+

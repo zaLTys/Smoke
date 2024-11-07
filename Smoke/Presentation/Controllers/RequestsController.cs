@@ -20,10 +20,10 @@ public sealed class RequestsController : ApiController
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateApiRequest(
-        [FromQuery]string name, [FromBody] string request,
+        [FromQuery]string name, [FromBody] string curl,
         CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new CreateApiRequestCommand(name, request), cancellationToken);
+        var result = await Sender.Send(new CreateApiRequestCommand(name, curl), cancellationToken);
 
         return CreatedAtAction(nameof(CreateApiRequest), new { result }, result);
     }
@@ -44,10 +44,10 @@ public sealed class RequestsController : ApiController
     [ProducesResponseType(typeof(RequestResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ExecuteApiRequest(
-    [FromBody] ExecuteApiRequest request,
+    [FromBody] string curl,
     CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new ExecuteApiRequestCommand(request.requestId), cancellationToken);
+        var result = await Sender.Send(new ExecuteApiRequestCommand(curl), cancellationToken);
 
         return Ok(result);
     }

@@ -1,0 +1,35 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+
+<PageTitle>Smoke</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="my-4">
+
+    <MudText Typo="Typo.h4" GutterBottom="true">Smoke</MudText>
+    <AuthorizeView>
+        <NotAuthorized>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudPaper Elevation="3" Class="p-4 mb-4">
+                        <MudText Typo="Typo.body1" Class="mb-8">Please log in or register to use the system</MudText>
+                        <MudButton Variant="Variant.Outlined"
+                                   ButtonType="ButtonType.Submit"
+                                   StartIcon="@Icons.Material.Filled.Login"
+                                   DisableElevation="true"
+                                   Size="Size.Small"
+                                   Style="background-color: white; min-width: 150px;"
+                                   Color="Color.Secondary"
+                                   OnClick="HandleValidSubmit">
+                            Login
+                        </MudButton>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <AuthorizeView>
+        <Authorized>
+        </Authorized>
+    </AuthorizeView>
+
+</MudContainer>

@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Requests;
 using Domain.Primitives;
 using System.Text;
+using System.Text.RegularExpressions;
 public class CurlParserService : ICurlParserService
 {
     public ApiRequest ParseCurlCommand(string name, string curlCommand)
@@ -9,6 +10,8 @@ public class CurlParserService : ICurlParserService
         {
             throw new ArgumentException("Curl command cannot be null or empty.");
         }
+
+        curlCommand = Regex.Replace(curlCommand, @"\\[r]?\\n", " ");
 
         curlCommand = curlCommand.Replace("\\\n", " ").Replace("\\\r\n", " ").Replace("\\", "");
 
