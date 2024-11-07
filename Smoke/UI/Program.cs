@@ -8,6 +8,9 @@ using UI.Components;
 using UI.Contracts;
 using UI.Middlewares;
 using UI.Services;
+using UI.Auth;
+using UI.Components;
+using UI.Services.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,10 +38,11 @@ builder.Services.AddSingleton(new HttpClient
     BaseAddress = new Uri("https://localhost:7090")
 });
 
+
 builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
-builder.Services.AddHttpClient<IClient, Client>(client => new Client(new HttpClient()
+builder.Services.AddHttpClient<IClient, Client>(client => new Client("https://localhost:7051", new HttpClient()
 {
-    BaseAddress = new Uri("https://localhost:7155")
+  //  BaseAddress = new Uri("https://localhost:7051")
 }))
     .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
@@ -49,7 +53,8 @@ builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, BlazorAutho
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IStateChangeService, StateChangeService>();
 builder.Services.AddScoped<IChangeNotificationService, ChangeNotificationService>();
-//builder.Services.AddScoped<IApiRequestDataService, ApiRequestDataService>();
+
+builder.Services.AddScoped<IApiRequestDataService, ApiRequestDataService>();
 
 builder.Services.AddOptions();
 builder.Services.AddBlazoredToast();

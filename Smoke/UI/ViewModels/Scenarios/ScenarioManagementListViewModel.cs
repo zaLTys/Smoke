@@ -1,4 +1,4 @@
-﻿namespace UI.ViewModels
+﻿namespace UI.ViewModels.Scenarios
 {
     public class ScenarioManagementListViewModel
     {

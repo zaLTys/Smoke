@@ -1,4 +1,6 @@
-﻿namespace UI.Services
+﻿using System.Net.Http;
+
+namespace UI.Services.Base
 {
     public partial class Client : IClient
     {

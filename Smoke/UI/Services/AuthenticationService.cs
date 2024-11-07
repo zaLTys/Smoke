@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
 using UI.Auth;
 using UI.Contracts;
 using UI.Services.Base;
@@ -20,13 +19,13 @@ namespace UI.Services
             _authenticationStateProvider = authenticationStateProvider;
         }
 
-        public async Task<bool> AuthenticateForApi(long athleteId, string password)
+        public async Task<bool> AuthenticateForApi(long apiRequestId, string password)
         {
             return true;
 
             //try
             //{
-            //    AuthenticationRequest authenticationRequest = new AuthenticationRequest() { AthleteId = athleteId, Password = password };
+            //    AuthenticationRequest authenticationRequest = new AuthenticationRequest() { ApiRequestId = apiRequestId, Password = password };
             //    var authenticationResponse = await _client.GetAuthUrlAsync();
 
             //    //TODO:AddToken
@@ -53,35 +52,30 @@ namespace UI.Services
             _client.HttpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        public async Task<string> GetAuthenticationUrl()
+        public async Task<bool> AuthenticateDummy(string code)
         {
-            var response = await _client.GetAuthUrlAsync();
-            return response.AuthenticationUrl;
-        }
+            ((CustomAuthenticationStateProvider)_authenticationStateProvider).SetUserAuthenticated(1);
+            return true;
 
-        public async Task<bool> AuthenticateViaStrava(string code)
-        {
-            try
-            {
-                var authenticationResponse = await _client.AuthenticateAsync(code);
-                if (authenticationResponse.AuthenticationResponse.Token != null
-                    && authenticationResponse.AuthenticationResponse.AthleteId != null)
-                {
-                    await _localStorage.SetItemAsync("token", authenticationResponse.AuthenticationResponse.Token);
-                    await _localStorage.SetItemAsync("athleteId", authenticationResponse.AuthenticationResponse.AthleteId);
-                    ((CustomAuthenticationStateProvider)_authenticationStateProvider).SetUserAuthenticated(authenticationResponse.AuthenticationResponse.AthleteId);
-                    _client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", authenticationResponse.AuthenticationResponse.Token);
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-                //Todo:log
-                return false;
-            }
-
-
+            //try
+            //{
+            //    var authenticationResponse = await _client.AuthenticateAsync(code);
+            //    if (authenticationResponse.AuthenticationResponse.Token != null
+            //        && authenticationResponse.AuthenticationResponse.ApiRequestId != null)
+            //    {
+            //        await _localStorage.SetItemAsync("token", authenticationResponse.AuthenticationResponse.Token);
+            //        await _localStorage.SetItemAsync("apiRequestId", authenticationResponse.AuthenticationResponse.ApiRequestId);
+            //        ((CustomAuthenticationStateProvider)_authenticationStateProvider).SetUserAuthenticated(authenticationResponse.AuthenticationResponse.ApiRequestId);
+            //        _client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", authenticationResponse.AuthenticationResponse.Token);
+            //        return true;
+            //    }
+            //    return false;
+            //}
+            //catch (Exception)
+            //{
+            //    //Todo:log
+            //    return false;
+            //}
         }
     }
 }

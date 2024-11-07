@@ -1,24 +1,17 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using UI.Auth;
 using UI.Contracts;
 
-namespace UI.Components.Pages
+namespace UI.Components.Pages.Auth
 {
-    public partial class Index : ComponentBase
+    public partial class Login
     {
-        [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-
         [Inject] public NavigationManager NavigationManager { get; set; }
-        [Inject] private IAuthenticationService AuthenticationService { get; set; }
+
         [Inject] IToastService ToastService { get; set; } = default!;
 
+        [Inject] private IAuthenticationService AuthenticationService { get; set; }
 
-        protected async override Task OnInitializedAsync()
-        {
-            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
-        }
 
         protected async void HandleValidSubmit()
         {

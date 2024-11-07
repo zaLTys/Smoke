@@ -12,7 +12,8 @@ public class CurlStringEscapeMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Request.Path == "/api/Requests/create" && context.Request.Method == HttpMethods.Post)
+        if ((context.Request.Path == "/api/Requests/create" || context.Request.Path == "/api/Requests/execute")
+             && context.Request.Method == HttpMethods.Post)
         {
             // Read the original request body
             using var reader = new StreamReader(context.Request.Body);
@@ -34,6 +35,11 @@ public class CurlStringEscapeMiddleware
 
     private string EscapeCurlCommand(string curlCommand)
     {
+        if (IsAlreadyEscaped(curlCommand))
+        {
+            return curlCommand; // Return as is to avoid double-escaping
+        }
+
         // Escape backslashes
         curlCommand = curlCommand.Replace("\\", "\\\\");
 
@@ -48,6 +54,11 @@ public class CurlStringEscapeMiddleware
 
         // Wrap the entire command in JSON string format to ensure compatibility
         return $"\"{curlCommand}\"";
+    }
+
+    private bool IsAlreadyEscaped(string input)
+    {
+        return input.Contains("\\\"") || input.Contains("\\n") || input.Contains("\\\\");
     }
 
 }

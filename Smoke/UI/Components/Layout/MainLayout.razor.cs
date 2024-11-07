@@ -47,19 +47,19 @@ namespace UI.Components.Layout
         {
             PaletteLight = new PaletteLight
             {
-                Background = "rgba(241, 241, 242, 1)",              // Light gray for the app background
-                AppbarBackground = "rgba(26, 22, 73, 1)",           // Dark blue for the header's background
-                Primary = "rgba(191, 228, 255, 1)",                 // Light sky blue for buttons
-                PrimaryContrastText = "rgba(255, 255, 255, 1)",     // White for button text, ensuring readability
-                Secondary = "rgba(26, 22, 73, 1)",                  // Dark blue for secondary buttons/elements
-                Tertiary = "rgba(26, 22, 72, 1)",                   // Similar dark blue for tertiary color
-                TextPrimary = "rgba(26, 22, 73, 1)",                // Dark blue for headline text
-                TextSecondary = "rgba(26, 22, 73, 0.7)",            // Slightly transparent dark blue for paragraph text
-                ActionDefault = "rgba(26, 22, 73, 1)",              // Dark blue for illustration stroke
-                Surface = "rgba(241, 241, 242, 1)",                 // Light gray for elements like cards/modals
-                DrawerBackground = "rgba(241, 241, 242, 1)",        // Light gray for side drawers/panels
-                Info = "rgba(120, 170, 200, 1)",                    // Light sky blue for highlights
-                Error = "rgba(255, 69, 0, 1)"                       // A standard error color, orange/red
+                Background = "rgba(241, 241, 242, 1)",             // Light gray for the app background
+                AppbarBackground = "rgba(26, 22, 73, 1)",          // Dark blue for the header's background
+                Primary = "rgba(26, 22, 73, 1)",                // Darker light sky blue for buttons
+                PrimaryContrastText = "rgba(255, 255, 255, 1)",    // White for button text, ensuring readability
+                Secondary = "rgba(26, 22, 73, 1)",                 // Dark blue for secondary buttons/elements
+                Tertiary = "rgba(26, 22, 72, 1)",                  // Similar dark blue for tertiary color
+                TextPrimary = "rgba(26, 22, 73, 1)",               // Dark blue for headline text
+                TextSecondary = "rgba(26, 22, 73, 0.85)",          // Darker transparent dark blue for paragraph text
+                ActionDefault = "rgba(26, 22, 73, 1)",             // Dark blue for illustration stroke
+                Surface = "rgba(230, 230, 232, 1)",                // Slightly darker gray for elements like cards/modals
+                DrawerBackground = "rgba(230, 230, 232, 1)",       // Matching slightly darker gray for side drawers/panels
+                Info = "rgba(90, 140, 180, 1)",                    // Darker sky blue for highlights
+                Error = "rgba(255, 69, 0, 1)"                      // Standard error color remains the same
             }
         };
         private bool _isDarkMode;

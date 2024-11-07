@@ -4,7 +4,7 @@
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Color="Color.Primary" Class="ml-3">UI</MudText>
+        <MudText Typo="Typo.h5" Color="Color.Primary" Class="ml-3">Smoke</MudText>
         <MudSpacer />
         <AuthorizeView>
             <Authorized>
@@ -33,6 +33,7 @@
 </MudLayout>
 
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 <BlazoredToasts Position="ToastPosition.BottomRight" Timeout="5" MaxToastCount="3" ShowCloseButton="true" />

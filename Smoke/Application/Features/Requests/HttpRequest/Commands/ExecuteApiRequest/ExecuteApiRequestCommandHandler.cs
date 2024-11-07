@@ -1,31 +1,24 @@
 ﻿using Application.Abstractions.Messaging;
-using Domain.Abstractions.Repositories;
 using Domain.Entities.Requests;
-using Domain.Entities.Scenarios;
-using Domain.Exceptions;
 
 namespace Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 
 internal sealed class ExecuteApiRequestCommandHandler : ICommandHandler<ExecuteApiRequestCommand, RequestResult>
 {
-    private readonly IRequestRepository _requestRepository;
     private readonly IHttpRequestService _httpRequestService;
+    private readonly ICurlParserService _curlParserService;
 
-    public ExecuteApiRequestCommandHandler(IRequestRepository requestRepository, IHttpRequestService httpRequestService)
+    public ExecuteApiRequestCommandHandler(ICurlParserService parserService, IHttpRequestService httpRequestService)
     {
-        _requestRepository = requestRepository;
+        _curlParserService = parserService;
         _httpRequestService = httpRequestService;
     }
 
 
     public async Task<RequestResult> Handle(ExecuteApiRequestCommand command, CancellationToken cancellationToken)
     {
-        var apiRequest = _requestRepository.GetById(command.requestId);
-        if (apiRequest == null)
-        {
-            throw new RequestNotFoundException(command.requestId);
-        }
+        var request = _curlParserService.ParseCurlCommand("temp", command.Curl);
 
-        return  await _httpRequestService.SendRequestAsync(apiRequest);
+        return await _httpRequestService.SendRequestAsync(request);
     }
 }

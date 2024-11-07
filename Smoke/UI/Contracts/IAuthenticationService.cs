@@ -2,8 +2,7 @@
 {
     public interface IAuthenticationService
     {
-        Task<string> GetAuthenticationUrl();
-        Task<bool> AuthenticateViaStrava(string code);
+        Task<bool> AuthenticateDummy(string code);
         Task Logout();
     }
 }

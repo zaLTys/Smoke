@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Requests;
 using Domain.Primitives;
 using System.Text;
+using System.Text.RegularExpressions;
 
 public class HttpRequestService : IHttpRequestService
 {
@@ -37,6 +38,13 @@ public class HttpRequestService : IHttpRequestService
         {
             using var response = await client.SendAsync(requestMessage);
             var responseContent = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine("Raw Response Content: " + responseContent);
+
+            var unescapedContent = Regex.Unescape(responseContent);
+            Console.WriteLine("Unescaped Response Content: " + unescapedContent);
+
+
             var isSuccess = response.IsSuccessStatusCode;
 
             return new RequestResult(

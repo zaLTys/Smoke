@@ -15,19 +15,25 @@ namespace UI.Auth
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var savedToken = await _localStorage.GetItemAsync<string>("token");
+            var authUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "dummyUser") }, "apiauth"));
+            var authState = Task.FromResult(new AuthenticationState(authUser));
+            NotifyAuthenticationStateChanged(authState);
 
-            if (string.IsNullOrWhiteSpace(savedToken))
-            {
-                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-            }
+            return authState.Result;
 
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseTokenClaims(savedToken), "jwt")));
+            //var savedToken = await _localStorage.GetItemAsync<string>("token");
+
+            //if (string.IsNullOrWhiteSpace(savedToken))
+            //{
+            //    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            //}
+
+            //return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseTokenClaims(savedToken), "jwt")));
         }
 
-        public void SetUserAuthenticated(long athleteId)
+        public void SetUserAuthenticated(long apiRequestId)
         {
-            var authUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, athleteId.ToString()) }, "apiauth"));
+            var authUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, apiRequestId.ToString()) }, "apiauth"));
             var authState = Task.FromResult(new AuthenticationState(authUser));
             NotifyAuthenticationStateChanged(authState);
         }
