@@ -4,6 +4,7 @@ using UI.Contracts;
 using UI.Responses;
 using UI.Services.Base;
 using UI.ViewModels.Requests;
+using IClient = UI.Services.Base.IClient;
 
 namespace UI.Services
 {
@@ -29,6 +30,14 @@ namespace UI.Services
             var apiRequest = await _client.ApiRequestsExecuteAsync(curl, cancellationToken);
             var mappedElement = _mapper.Map<RequestResult>(apiRequest);
             return ServiceResponse<RequestResult>.FromData(mappedElement);
+        }
+
+        public async Task<ServiceResponse<ApiRequestViewModel>> UpdateApiRequest(ApiRequestViewModel model, CancellationToken cancellationToken)
+        {
+            var mappedModel = _mapper.Map<ApiRequest>(model);
+            var apiRequest = await _client.ApiRequestsUpdateAsync(mappedModel, cancellationToken);
+            var mappedElement = _mapper.Map<ApiRequestViewModel>(apiRequest);
+            return ServiceResponse<ApiRequestViewModel>.FromData(mappedElement);
         }
 
         //public async Task<ServiceResponse<ApiRequestViewModel>> GetApiRequestById(Guid id, CancellationToken cancellationToken)

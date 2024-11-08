@@ -12,8 +12,8 @@ namespace UI.Components.Pages.Requests
     public partial class RegisterRequest : DataLoader
     {
         [Inject] IToastService ToastService { get; set; } = default!;
-
         [Inject] public IApiRequestDataService ApiRequestDataService { get; set; }
+        [Inject] private IAuthenticationService AuthenticationService { get; set; }
 
         public RegisterRequestViewModel RequestToRegister { get; set; } = new RegisterRequestViewModel();
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
@@ -21,17 +21,18 @@ namespace UI.Components.Pages.Requests
         [Inject] public NavigationManager NavigationManager { get; set; }
 
         public string Message { get; set; }
-        public string ExecutionResult { get; set; } = string.Empty;
+        public string Output { get; set; } = string.Empty;
+        public ApiRequestViewModel RegisteredRequest { get; set; } = null;
 
-        [Inject] private IAuthenticationService AuthenticationService { get; set; }
+        private List<HeaderViewModel> HeaderEntries { get; set; } = new();
 
 
-        private async Task<bool> HandleRegister()
+
+        private async void HandleRegister()
         {
             if (RequestToRegister.Name == null || RequestToRegister.Name == string.Empty)
             {
                 ToastService.ShowError("Please provide request name");
-                return false;
             }
 
 
@@ -41,23 +42,38 @@ namespace UI.Components.Pages.Requests
                 if (created.Success)
                 {
                     ToastService.ShowSuccess("Request registered");
-                    //CreateTeamName = string.Empty;
-                    //await RefreshTeams();
+                    RegisteredRequest = created.Data;
+                    HeaderEntries = created.Data.ApiRequestData.Headers;
+                    StateHasChanged();
                 }
-                return created.Success;
-
             }
             ToastService.ShowError("Request with that name already exists");
-            return false;
 
         }
 
         protected async void Execute()
         {
             var response = await ApiRequestDataService.ExecuteApiRequest(RequestToRegister.Curl, Cts.Token);
+            if (response.Data.IsSuccess)
+            {
+                Output = response.Data.Response;
+                StateHasChanged();
+            }
+            else
+            {
+                ToastService.ShowError(response.Message);
+                ErrorMessage = response.Data.ErrorMessage;
+                Output = response.Data.ErrorMessage;
+                StateHasChanged();
+            }
+        }
+
+        protected async void Update()
+        {
+            var response = await ApiRequestDataService.UpdateApiRequest(RegisteredRequest, Cts.Token);
             if (response.Success)
             {
-                ExecutionResult = response.Data.Response;
+                Output = JsonConvert.SerializeObject(response.Data, Formatting.Indented);
                 StateHasChanged();
             }
             else
@@ -66,6 +82,24 @@ namespace UI.Components.Pages.Requests
                 ErrorMessage = response.Message!;
             }
         }
+
+        private void AddHeader()
+        {
+            HeaderEntries.Add(new HeaderViewModel("", ""));
+            UpdateHeaders();
+        }
+
+        private void RemoveHeader(HeaderViewModel header)
+        {
+            HeaderEntries.Remove(header);
+            UpdateHeaders();
+        }
+
+        private void UpdateHeaders()
+        {
+            RegisteredRequest.ApiRequestData.Headers = HeaderEntries;
+        }
+
 
         protected override List<Task<IServiceResponse>> DataLoadRequests
         {

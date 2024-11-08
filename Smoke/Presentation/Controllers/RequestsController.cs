@@ -1,5 +1,6 @@
 ﻿using Application.Features.Requests.HttpRequest.Commands.CloneApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
+using Application.Features.Requests.HttpRequest.Commands.ExecuteApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 using Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
@@ -17,7 +18,7 @@ namespace Presentation.Controllers;
 public sealed class RequestsController : ApiController
 {
     [HttpPost("create")]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateApiRequest(
         [FromQuery]string name, [FromBody] string curl,
@@ -25,11 +26,11 @@ public sealed class RequestsController : ApiController
     {
         var result = await Sender.Send(new CreateApiRequestCommand(name, curl), cancellationToken);
 
-        return CreatedAtAction(nameof(CreateApiRequest), new { result }, result);
+        return Ok(result);
     }
 
     [HttpPost("update")]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateApiRequest(
     [FromBody] ApiRequest request,
