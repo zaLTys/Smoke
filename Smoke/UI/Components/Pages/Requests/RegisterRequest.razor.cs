@@ -34,25 +34,24 @@ namespace UI.Components.Pages.Requests
             {
                 ToastService.ShowError("Please provide request name");
             }
-
-
-            if (!Requests.Any(x => x.Name.ToUpper() == RequestToRegister.Name.ToUpper()))
-            {
-                var created = await ApiRequestDataService.CreateApiRequest(RequestToRegister.Name, RequestToRegister.Curl, Cts.Token);
-                if (created.Success)
-                {
-                    ToastService.ShowSuccess("Request registered");
-                    RegisteredRequest = created.Data;
-                    HeaderEntries = created.Data.ApiRequestData.Headers;
-                    StateHasChanged();
-                }
-            }
             else
             {
-                ToastService.ShowError("Request with that name already exists");
+                if (!Requests.Any(x => x.Name.ToUpper() == RequestToRegister.Name.ToUpper()))
+                {
+                    var created = await ApiRequestDataService.CreateApiRequest(RequestToRegister.Name, RequestToRegister.Curl, Cts.Token);
+                    if (created.Success)
+                    {
+                        ToastService.ShowSuccess("Request registered");
+                        RegisteredRequest = created.Data;
+                        HeaderEntries = created.Data.ApiRequestData.Headers;
+                        StateHasChanged();
+                    }
+                }
+                else
+                {
+                    ToastService.ShowError("Request with that name already exists");
+                }
             }
-
-
         }
 
         protected async void Execute()
