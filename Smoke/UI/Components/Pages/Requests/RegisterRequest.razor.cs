@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Newtonsoft.Json;
 using System.Runtime;
 using UI.Components.Loader;
@@ -46,7 +47,11 @@ namespace UI.Components.Pages.Requests
                     StateHasChanged();
                 }
             }
-            ToastService.ShowError("Request with that name already exists");
+            else
+            {
+                ToastService.ShowError("Request with that name already exists");
+            }
+
 
         }
 
@@ -55,6 +60,7 @@ namespace UI.Components.Pages.Requests
             var response = await ApiRequestDataService.ExecuteApiRequest(RequestToRegister.Curl, Cts.Token);
             if (response.Data.IsSuccess)
             {
+                ToastService.ShowSuccess("Executed successfully");
                 Output = response.Data.Response;
                 StateHasChanged();
             }
@@ -72,6 +78,9 @@ namespace UI.Components.Pages.Requests
             var response = await ApiRequestDataService.UpdateApiRequest(RegisteredRequest, Cts.Token);
             if (response.Success)
             {
+                ToastService.ShowSuccess("Saved successfully");
+                RegisteredRequest = response.Data;
+                HeaderEntries = response.Data.ApiRequestData.Headers;
                 Output = JsonConvert.SerializeObject(response.Data, Formatting.Indented);
                 StateHasChanged();
             }

@@ -36,9 +36,9 @@ public sealed class RequestsController : ApiController
     [FromBody] ApiRequest request,
     CancellationToken cancellationToken)
     {
-        var dealId = await Sender.Send(new UpdateApiRequestCommand(request), cancellationToken);
+        var result = await Sender.Send(new UpdateApiRequestCommand(request), cancellationToken);
 
-        return CreatedAtAction(nameof(UpdateApiRequest), new { dealId }, dealId);
+        return Ok(result);
     }
 
     [HttpPost("execute")]
