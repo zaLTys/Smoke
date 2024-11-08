@@ -56,7 +56,7 @@ namespace UI.Components.Layout
                 TextPrimary = "rgba(26, 22, 73, 1)",               // Dark blue for headline text
                 TextSecondary = "rgba(26, 22, 73, 0.85)",          // Darker transparent dark blue for paragraph text
                 ActionDefault = "rgba(26, 22, 73, 1)",             // Dark blue for illustration stroke
-                Surface = "rgba(230, 230, 232, 1)",                // Slightly darker gray for elements like cards/modals
+                Surface = "rgba(255, 255, 255, 1)",                // Slightly darker gray for elements like cards/modals
                 DrawerBackground = "rgba(230, 230, 232, 1)",       // Matching slightly darker gray for side drawers/panels
                 Info = "rgba(90, 140, 180, 1)",                    // Darker sky blue for highlights
                 Error = "rgba(255, 69, 0, 1)"                      // Standard error color remains the same

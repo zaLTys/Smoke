@@ -13,7 +13,6 @@ namespace UI.Components.Pages.Requests
     {
         [Inject] IToastService ToastService { get; set; } = default!;
         [Inject] public IApiRequestDataService ApiRequestDataService { get; set; }
-        [Inject] private IAuthenticationService AuthenticationService { get; set; }
 
         public RegisterRequestViewModel RequestToRegister { get; set; } = new RegisterRequestViewModel();
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
@@ -61,7 +60,7 @@ namespace UI.Components.Pages.Requests
             }
             else
             {
-                ToastService.ShowError(response.Message);
+                ToastService.ShowError(response.Data.ErrorMessage);
                 ErrorMessage = response.Data.ErrorMessage;
                 Output = response.Data.ErrorMessage;
                 StateHasChanged();
