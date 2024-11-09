@@ -7,6 +7,7 @@ Users can provide cURL, database requests, save them, add placeholders to be dyn
 
 These requests can be chained and manipulated together to create complex scenarios where multiple APIs are called, and results are evaluated.
 
+Latest view (as of 2024-09-11)
 ![image](https://github.com/user-attachments/assets/3936bd2a-5ece-4f3c-96b7-7210959fbd4b)
 
 
