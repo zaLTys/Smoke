@@ -4,15 +4,37 @@
 <Content State="State" ErrorMessage="ErrorMessage">
     @if (Requests != null && Requests.Any())
     {
-        <ul>
-            @foreach (var request in Requests)
-            {
-                <li>@request.Name (@request.Id)</li>
-            }
-        </ul>
+        <MudContainer MaxWidth="MaxWidth.Large">
+            <MudGrid Gutter="Size.Small">
+                @foreach (var request in Requests)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Class="pa-4 my-2">
+                            <MudCardContent>
+                                <MudText Typo="Typo.h6">@request.Name</MudText>
+                                <MudText Typo="Typo.subtitle2">ID: @request.Id</MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => NavigateToRequestDetails(request.Id))">
+                                    View Details
+                                </MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudContainer>
     }
     else
     {
-        <p>No API requests found.</p>
+        <MudContainer MaxWidth="MaxWidth.Large">
+            <MudGrid Gutter="Size.Small">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudText>No API requests found.</MudText>
+                    </MudItem>
+            </MudGrid>
+        </MudContainer>
+
+
     }
 </Content>

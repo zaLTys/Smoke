@@ -11,7 +11,12 @@ namespace UI.Components.Lists
         [Inject]
         public IApiRequestDataService ApiRequestDataService { get; set; } = default!;
 
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = default!;
+
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
+
+
 
         protected override List<Task<IServiceResponse>> DataLoadRequests
         {
@@ -37,5 +42,12 @@ namespace UI.Components.Lists
                 throw new InvalidOperationException($"Unexpected response type: {response.GetType().Name}");
             }
         }
+
+        private void NavigateToRequestDetails(Guid requestId)
+        {
+            // Navigate to the request details page
+            NavigationManager.NavigateTo($"/requests/details/{requestId}");
+        }
+
     }
 }
