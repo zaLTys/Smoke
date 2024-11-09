@@ -1,0 +1,18 @@
+﻿@using UI.Components.Loader
+@inherits DataLoader
+
+<Content State="State" ErrorMessage="ErrorMessage">
+    @if (Requests != null && Requests.Any())
+    {
+        <ul>
+            @foreach (var request in Requests)
+            {
+                <li>@request.Name (@request.Id)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No API requests found.</p>
+    }
+</Content>

@@ -66,7 +66,7 @@ public sealed class RequestsController : ApiController
     }
 
     [HttpGet("all")]
-    [ProducesResponseType(typeof(ApiRequest), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ICollection<ApiRequest>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetApiRequests(
     CancellationToken cancellationToken)

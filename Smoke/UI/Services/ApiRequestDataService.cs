@@ -20,32 +20,32 @@ namespace UI.Services
 
         public async Task<ServiceResponse<ApiRequestViewModel>> CreateApiRequest(string name, string curl, CancellationToken cancellationToken)
         {
-            var apiRequest = await _client.ApiRequestsCreateAsync(name, curl, cancellationToken);
-            var mappedElement = _mapper.Map<ApiRequestViewModel>(apiRequest);
+            var response = await _client.ApiRequestsCreateAsync(name, curl, cancellationToken);
+            var mappedElement = _mapper.Map<ApiRequestViewModel>(response);
             return ServiceResponse<ApiRequestViewModel>.FromData(mappedElement);
         }
 
         public async Task<ServiceResponse<RequestResult>> ExecuteApiRequest(string curl, CancellationToken cancellationToken)
         {
-            var apiRequest = await _client.ApiRequestsExecuteAsync(curl, cancellationToken);
-            var mappedElement = _mapper.Map<RequestResult>(apiRequest);
+            var response = await _client.ApiRequestsExecuteAsync(curl, cancellationToken);
+            var mappedElement = _mapper.Map<RequestResult>(response);
             return ServiceResponse<RequestResult>.FromData(mappedElement);
         }
 
         public async Task<ServiceResponse<ApiRequestViewModel>> UpdateApiRequest(ApiRequestViewModel model, CancellationToken cancellationToken)
         {
             var mappedModel = _mapper.Map<ApiRequest>(model);
-            var apiRequest = await _client.ApiRequestsUpdateAsync(mappedModel, cancellationToken);
-            var mappedElement = _mapper.Map<ApiRequestViewModel>(apiRequest);
+            var response = await _client.ApiRequestsUpdateAsync(mappedModel, cancellationToken);
+            var mappedElement = _mapper.Map<ApiRequestViewModel>(response);
             return ServiceResponse<ApiRequestViewModel>.FromData(mappedElement);
         }
 
-        //public async Task<ServiceResponse<ApiRequestViewModel>> GetApiRequestById(Guid id, CancellationToken cancellationToken)
-        //{
-        //    var apiRequest = await _client.ApiRequestsAsync(id, cancellationToken);
-        //    var mappedElement = _mapper.Map<ApiRequestViewModel>(apiRequest);
-        //    return ServiceResponse<ApiRequestViewModel>.FromData(mappedElement);
-        //}
+        public async Task<ServiceResponse<List<ApiRequestViewModel>>> GetApiRequestAll(CancellationToken cancellationToken)
+        {
+            var response = await _client.ApiRequestsAllAsync(cancellationToken);
+            var mappedElement = _mapper.Map<List<ApiRequestViewModel>>(response);
+            return ServiceResponse<List<ApiRequestViewModel>>.FromData(mappedElement);
+        }
 
         //public Task<ApiResponse<ApiRequestViewModel>> UpdateApiRequest(ApiRequestViewModel eventDetailViewModel)
         //{

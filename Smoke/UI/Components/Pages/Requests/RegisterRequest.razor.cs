@@ -114,10 +114,10 @@ namespace UI.Components.Pages.Requests
             {
                 var tasks = new List<Task<IServiceResponse>>();
 
-                //var teamsTask = TeamDataService.GetTeamsWithAthletes(Cts.Token);
-                //var athletesTask = AthleteDataService.GetAllAthletes(Cts.Token);
+                //var scenariosTask = ScenarioDataService.GetScenariosWithApiRequests(Cts.Token);
+                //var athletesTask = ApiRequestDataService.GetAllApiRequests(Cts.Token);
 
-                //tasks.Add(Task.Run(async () => await teamsTask as IServiceResponse));
+                //tasks.Add(Task.Run(async () => await scenariosTask as IServiceResponse));
                 //tasks.Add(Task.Run(async () => await athletesTask as IServiceResponse));
 
                 return tasks;
@@ -130,19 +130,19 @@ namespace UI.Components.Pages.Requests
         {
             //switch (response)
             //{
-            //    case ServiceResponse<List<TeamManagementListViewModel>> teamResponse when teamResponse.Success:
-            //        Teams = teamResponse.Data;
-            //        TeamAthletes = teamResponse.Data.SelectMany(x => x.Athletes).ToList();
+            //    case ServiceResponse<List<ScenarioManagementListViewModel>> scenarioResponse when scenarioResponse.Success:
+            //        Scenarios = scenarioResponse.Data;
+            //        ScenarioApiRequests = scenarioResponse.Data.SelectMany(x => x.ApiRequests).ToList();
             //        break;
-            //    case ServiceResponse<List<AthleteListViewModel>> athleteResponse when athleteResponse.Success:
-            //        var teamlessAthletes = athleteResponse.Data.Where(x => x.TeamId == null).Select(x => new TeamManagementAthleteViewModel
+            //    case ServiceResponse<List<ApiRequestListViewModel>> athleteResponse when athleteResponse.Success:
+            //        var scenariolessApiRequests = athleteResponse.Data.Where(x => x.ScenarioId == null).Select(x => new ScenarioManagementApiRequestViewModel
             //        {
-            //            AthleteId = x.Id,
+            //            ApiRequestId = x.Id,
             //            Name = $"{x.FirstName} {x.LastName}",
             //            ProfileImageUrl = x.ProfileImageUrl,
-            //            TeamId = Guid.Empty
+            //            ScenarioId = Guid.Empty
             //        }).ToList();
-            //        TeamAthletes.AddRange(teamlessAthletes);
+            //        ScenarioApiRequests.AddRange(scenariolessApiRequests);
             //        break;
             //    default:
             //        throw new InvalidOperationException($"Unhandled response type: {response.GetType().Name}");

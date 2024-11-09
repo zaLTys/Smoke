@@ -19,6 +19,8 @@
 
 namespace UI.Services.Base
 {
+    using System.Threading;
+    using System.Threading.Tasks;
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -62,12 +64,12 @@ namespace UI.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiRequest> ApiRequestsAllAsync();
+        System.Threading.Tasks.Task<List<ApiRequest>> ApiRequestsAllAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiRequest> ApiRequestsAllAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<List<ApiRequest>> ApiRequestsAllAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>Created</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -525,9 +527,9 @@ namespace UI.Services.Base
             }
         }
 
-        /// <returns>OK</returns>
+        /// <returns>Created</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ApiRequest> ApiRequestsAllAsync()
+        public virtual System.Threading.Tasks.Task<List<ApiRequest>> ApiRequestsAllAsync()
         {
             return ApiRequestsAllAsync(System.Threading.CancellationToken.None);
         }
@@ -535,7 +537,7 @@ namespace UI.Services.Base
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ApiRequest> ApiRequestsAllAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<ApiRequest>> ApiRequestsAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -576,7 +578,7 @@ namespace UI.Services.Base
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiRequest>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<List<ApiRequest>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1188,6 +1190,7 @@ namespace UI.Services.Base
             var result = System.Convert.ToString(value, cultureInfo);
             return result == null ? "" : result;
         }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
