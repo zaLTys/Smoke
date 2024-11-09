@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using UI.Services.Base;
 using UI.ViewModels.Requests;
+using UI.ViewModels.Scenarios;
 
 
 namespace UI.Profiles
@@ -35,6 +36,17 @@ namespace UI.Profiles
                 .ForMember(dest => dest.HttpMethod, opt => opt.MapFrom(src => Enum.Parse<HttpMethodType>(src.HttpMethod)))
                 .ForMember(dest => dest.Headers, opt => opt.MapFrom(src => src.Headers.ToDictionary(h => h.Key, h => h.Value)));
 
+
+            CreateMap<Services.Base.Scenario, ScenarioViewModel>().ReverseMap();
+
+            // Mapping between ScenarioContext and ScenarioContextViewModel
+            //CreateMap<ScenarioContext, ScenarioContextViewModel>().ReverseMap();
+
+            // Mapping between ScenarioStep and ScenarioStepViewModel
+            CreateMap<Services.Base.ScenarioStep, ScenarioStepViewModel>().ReverseMap();
+
+            // Mapping between ScenarioStepResult and ScenarioStepResultViewModel
+            CreateMap<Services.Base.ScenarioStepResult, ScenarioStepResultViewModel>().ReverseMap();
         }
     }
 }

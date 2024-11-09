@@ -55,6 +55,7 @@ builder.Services.AddScoped<IStateChangeService, StateChangeService>();
 builder.Services.AddScoped<IChangeNotificationService, ChangeNotificationService>();
 
 builder.Services.AddScoped<IApiRequestDataService, ApiRequestDataService>();
+builder.Services.AddScoped<IScenarioDataService, ScenarioDataService>();
 
 builder.Services.AddOptions();
 builder.Services.AddBlazoredToast();
