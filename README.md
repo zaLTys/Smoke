@@ -7,6 +7,9 @@ Users can provide cURL, database requests, save them, add placeholders to be dyn
 
 These requests can be chained and manipulated together to create complex scenarios where multiple APIs are called, and results are evaluated.
 
+![image](https://github.com/user-attachments/assets/3936bd2a-5ece-4f3c-96b7-7210959fbd4b)
+
+
 # Planned Features
 - API Request Management: Create, update, and manage HTTP requests, including support for authorization and authentication.
 - Scenario Building: Chain multiple requests into scenarios with ordered steps, dependencies, and data mappings.
