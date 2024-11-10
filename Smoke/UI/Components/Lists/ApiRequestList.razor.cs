@@ -14,9 +14,40 @@ namespace UI.Components.Lists
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
 
+        [Parameter]
+        public EventCallback<ApiRequestViewModel> OnRequestSelected { get; set; }
+
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
 
+        private List<ApiRequestViewModel> FilteredRequests { get; set; } = new List<ApiRequestViewModel>();
 
+        private string _searchText = string.Empty;
+
+        private string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    UpdateFilteredRequests();
+                }
+            }
+        }
+
+        private void UpdateFilteredRequests()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilteredRequests = Requests;
+            }
+            else
+            {
+                FilteredRequests = Requests.Where(r => r.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            InvokeAsync(StateHasChanged);
+        }
 
         protected override List<Task<IServiceResponse>> DataLoadRequests
         {
@@ -36,18 +67,12 @@ namespace UI.Components.Lists
             if (response is ServiceResponse<List<ApiRequestViewModel>> apiRequestsResponse)
             {
                 Requests = apiRequestsResponse.Data;
+                UpdateFilteredRequests();
             }
             else
             {
                 throw new InvalidOperationException($"Unexpected response type: {response.GetType().Name}");
             }
         }
-
-        private void NavigateToRequestDetails(Guid requestId)
-        {
-            // Navigate to the request details page
-            NavigationManager.NavigateTo($"/requests/details/{requestId}");
-        }
-
     }
 }

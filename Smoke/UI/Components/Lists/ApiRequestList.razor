@@ -1,38 +1,40 @@
 ﻿@using UI.Components.Loader
+@using UI.ViewModels.Requests
 @inherits DataLoader
 
 <Content State="State" ErrorMessage="ErrorMessage">
-    @if (Requests != null && Requests.Any())
-    {
-        <MudContainer MaxWidth="MaxWidth.Large">
-            <MudGrid Gutter="Size.Small">
-                @foreach (var request in Requests)
-                {
-                    <MudItem xs="12" sm="6" md="4" lg="3">
-                        <MudCard Class="pa-4 my-2">
-                            <MudCardContent>
-                                <MudText Typo="Typo.h6">@request.Name</MudText>
-                                <MudText Typo="Typo.subtitle2">ID: @request.Id</MudText>
-                            </MudCardContent>
-                            <MudCardActions>
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => NavigateToRequestDetails(request.Id))">
-                                    View Details
-                                </MudButton>
-                            </MudCardActions>
-                        </MudCard>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudContainer>
-    }
-    else
-    {
-        <MudContainer MaxWidth="MaxWidth.Large">
-            <MudGrid Gutter="Size.Small">
-                    <MudItem xs="12" sm="6" md="4" lg="3">
-                        <MudText>No API requests found.</MudText>
-                    </MudItem>
-            </MudGrid>
-        </MudContainer>
-    }
+    <MudContainer Style="max-width: 10000px; width: 100%; margin-left: 0;">
+        <MudGrid>
+            <MudItem xs="12" sm="6" md="6" lg="6">
+                <MudPaper Class="pa-4 my-2" Style="width:100%;">
+                    <MudText Typo="Typo.h6">API Requests</MudText>
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="SearchText"
+                                          Label="Search"
+                                          Immediate="true"
+                                          Variant="Variant.Outlined" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            @if (FilteredRequests != null && FilteredRequests.Any())
+                            {
+                                <MudList T="ApiRequestViewModel">
+                                    @foreach (var request in FilteredRequests)
+                                    {
+                                        <MudListItem OnClick="@(() => OnRequestSelected.InvokeAsync(request))">
+                                            @request.Name
+                                        </MudListItem>
+                                    }
+                                </MudList>
+                            }
+                            else
+                            {
+                                <MudText>No API requests found.</MudText>
+                            }
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
 </Content>
