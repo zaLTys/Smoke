@@ -1,5 +1,6 @@
 ﻿@page "/scenario"
 @using UI.Components.Loader
+@using UI.ViewModels.Scenarios
 @inherits DataLoader
 
 
@@ -42,26 +43,51 @@
                             <MudTextField Label="Name" @bind-Value="RegisteredScenario.Name" Variant="Variant.Outlined" />
                         </MudItem>
 
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h6" Class="mb-4">Steps</MudText>
+                            <MudDropContainer T="ScenarioStepViewModel" Items="ScenarioSteps" ItemsSelector="@((item, dropzone) => true)" ItemDropped="OnDrop" Class="d-flex flex-wrap flex-grow-1">
+                                <ChildContent>
+                                    <MudDropZone T="ScenarioStepViewModel" Identifier="Drop Zone 1" Class="rounded mud-background-gray pa-6 ma-8 flex-grow-1" AllowReorder="true">
+                                    </MudDropZone>
+                                </ChildContent>
+                                <ItemRenderer>
+                                    <MudGrid>
+                                        <MudItem xs="12">
+                                            <MudPaper Elevation="25" Class="d-flex align-items-center">
+                                                <MudText Class="mx-2">@context.RequestName</MudText>
+                                                <MudText Class="mx-2">@context.StepType</MudText>
+                                                <MudText Class="mx-2">@context.Order</MudText>
+                                                <MudTextField @bind-Value="context.TimeOut" Variant="Variant.Text" Class="mx-2" />
+                                                <MudTextField @bind-Value="context.DelayAfter" Variant="Variant.Text" Class="mx-2" />
+                                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="(() => RemoveStep(context))" Class="mx-2" />
+                                            </MudPaper>
+                                        </MudItem>
+                                    </MudGrid>
+                                </ItemRenderer>
+                            </MudDropContainer>
+                        </MudItem>
+
                         <!-- Headers Table -->
                         <MudItem xs="12">
                             <MudText Typo="Typo.h6">Steps</MudText>
-                            <MudTable Items="ScenarioSteps" Bordered="true" Hover="true">
+                            <MudTable Items="ScenarioSteps" Bordered="true" Hover="false">
                                 <HeaderContent>
                                     <MudTh>RequestName</MudTh>
                                     <MudTh>Type</MudTh>
                                     <MudTh>Order</MudTh>
                                     <MudTh>Timeout</MudTh>
                                     <MudTh>DelayAfter</MudTh>
+                                    <MudTh>Act</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd>
-                                        <MudTextField @bind-Value="context.RequestName" Variant="Variant.Outlined" ReadOnly="true" />
+                                        <MudText>@context.RequestName</MudText>
                                     </MudTd>
                                     <MudTd>
-                                        <MudTextField @bind-Value="context.StepType" Variant="Variant.Outlined" ReadOnly="true" />
+                                        <MudText>@context.StepType</MudText>
                                     </MudTd>
                                     <MudTd>
-                                        <MudTextField @bind-Value="context.Order" Variant="Variant.Outlined" ReadOnly="true" />
+                                        <MudText>@context.Order</MudText>
                                     </MudTd>
                                     <MudTd>
                                         <MudTextField @bind-Value="context.TimeOut" Variant="Variant.Outlined" />

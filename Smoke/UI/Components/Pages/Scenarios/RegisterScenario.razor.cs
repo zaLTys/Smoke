@@ -1,9 +1,9 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
-using UI.Services.Base;
 using UI.ViewModels.Requests;
 using UI.ViewModels.Scenarios;
 
@@ -77,11 +77,31 @@ namespace UI.Components.Pages.Scenarios
         {
             ScenarioSteps.Remove(step);
             UpdateSteps();
+            StateHasChanged();
         }
 
         private void UpdateSteps()
         {
+            // Recalculate order
+            for (int i = 0; i < ScenarioSteps.Count; i++)
+            {
+                ScenarioSteps[i].Order = i + 1;
+            }
             RegisteredScenario.Steps = ScenarioSteps;
+        }
+
+        private void OnDrop(MudItemDropInfo<ScenarioStepViewModel> dropItem)
+        {
+            var item = dropItem.Item;
+            var index = dropItem.IndexInZone;
+
+            if (item != null)
+            {
+                ScenarioSteps.Remove(item);
+                ScenarioSteps.Insert(index, item);
+                UpdateSteps();
+                StateHasChanged();
+            }
         }
 
 
