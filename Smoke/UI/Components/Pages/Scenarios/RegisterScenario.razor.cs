@@ -1,4 +1,5 @@
 ﻿using Blazored.Toast.Services;
+using Domain.Primitives;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using UI.Components.Loader;
@@ -24,6 +25,7 @@ namespace UI.Components.Pages.Scenarios
         public string Output { get; set; } = string.Empty;
         public ScenarioViewModel RegisteredScenario { get; set; } = new ScenarioViewModel();
 
+        private MudDropContainer<ScenarioStepViewModel> _mudDropContainer;
         private List<ScenarioStepViewModel> ScenarioSteps { get; set; } = new();
 
 
@@ -70,14 +72,14 @@ namespace UI.Components.Pages.Scenarios
 
             ScenarioSteps.Add(newStep);
             UpdateSteps();
-            StateHasChanged();
+            RefreshContainer();
         }
 
         private void RemoveStep(ScenarioStepViewModel step)
         {
             ScenarioSteps.Remove(step);
             UpdateSteps();
-            StateHasChanged();
+            RefreshContainer();
         }
 
         private void UpdateSteps()
@@ -100,8 +102,26 @@ namespace UI.Components.Pages.Scenarios
                 ScenarioSteps.Remove(item);
                 ScenarioSteps.Insert(index, item);
                 UpdateSteps();
-                StateHasChanged();
+                RefreshContainer();
             }
+        }
+
+        private void RefreshContainer()
+        {
+            StateHasChanged();
+            _mudDropContainer.Refresh();
+        }
+
+        private string GetIconForStepType(StepType stepType)
+        {
+            return stepType switch
+            {
+                StepType.HttpRequest => Icons.Material.Filled.Http,
+                StepType.AuthRequest => Icons.Material.Filled.Lock,
+                StepType.DbRequest => Icons.Material.Filled.Storage,
+                StepType.Wait => Icons.Material.Filled.HourglassEmpty,
+                _ => Icons.Material.Filled.HelpOutline
+            };
         }
 
 
