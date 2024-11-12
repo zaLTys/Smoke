@@ -1,0 +1,40 @@
+﻿@using UI.Components.Loader
+@using UI.ViewModels.Scenarios
+@inherits DataLoader
+
+<Content State="State" ErrorMessage="ErrorMessage">
+    <MudContainer Style="max-width: 10000px; width: 100%; margin-left: 0;">
+        <MudGrid>
+            <MudItem xs="12" sm="6" md="6" lg="6">
+                <MudPaper Class="pa-4 my-2" Style="width:100%;">
+                    <MudText Typo="Typo.h6">Scenarios</MudText>
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="SearchText"
+                                          Label="Search"
+                                          Immediate="true"
+                                          Variant="Variant.Outlined" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            @if (FilteredScenarios != null && FilteredScenarios.Any())
+                            {
+                                <MudList T="ScenarioViewModel">
+                                    @foreach (var scenario in FilteredScenarios)
+                                    {
+                                        <MudListItem OnClick="@(() => OnScenarioSelected.InvokeAsync(scenario))">
+                                            @scenario.Name, (@scenario.Steps.Count) steps
+                                        </MudListItem>
+                                    }
+                                </MudList>
+                            }
+                            else
+                            {
+                                <MudText>No scenarios found.</MudText>
+                            }
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</Content>

@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories.InMemory
     {
         private readonly ConcurrentDictionary<Guid, ApiRequest> _requests = new();
 
-        public ApiRequest Save(ApiRequest apiRequest)
+        public ApiRequest Create(ApiRequest apiRequest)
         {
             if (_requests.TryAdd(apiRequest.Id, apiRequest))
             {

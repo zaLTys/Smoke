@@ -4,19 +4,19 @@ using Domain.Entities.Scenarios;
 
 namespace Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 
-internal sealed class AssignStepCommandHandler : ICommandHandler<AssignStepCommand, Scenario>
+internal sealed class UpdateScenarioCommandHandler : ICommandHandler<UpdateScenarioCommand, Scenario>
 {
     private readonly ICurlParserService _curlParserService;
     private readonly IScenarioRepository _scenarioRepository;
 
-    public AssignStepCommandHandler(ICurlParserService curlParserService, IScenarioRepository scenarioRepository)
+    public UpdateScenarioCommandHandler(ICurlParserService curlParserService, IScenarioRepository scenarioRepository)
     {
         _curlParserService = curlParserService;
         _scenarioRepository = scenarioRepository;
     }
 
-    public async Task<Scenario> Handle(AssignStepCommand command, CancellationToken cancellationToken)
+    public async Task<Scenario> Handle(UpdateScenarioCommand command, CancellationToken cancellationToken)
     {
-        return _scenarioRepository.AssignStep(command.RequestId, command.ScenarioId, command.Order);
+        return _scenarioRepository.Update(command.Scenario);
     }
 }

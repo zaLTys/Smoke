@@ -5,7 +5,7 @@
 
 
 <Content State="@State" ErrorMessage="@ErrorMessage">
-    <MudContainer Style="max-width: 10000px; width: 100%; margin-left: 0;">
+    <MudContainer Fixed="true" Style="max-width: 10000px; width: 100%; margin-left: 0;">
         <MudGrid>
             <MudItem xs="12" sm="8" md="8" lg="8">
                 <MudPaper Class="pa-4 my-2" Style="width:100%;">
@@ -75,40 +75,18 @@
                             </MudDropContainer>
                         </MudItem>
 
-                       @*  <MudItem xs="12">
-                            <MudText Typo="Typo.h6">Steps</MudText>
-                            <MudTable Items="ScenarioSteps" Bordered="true" Hover="false">
-                                <HeaderContent>
-                                    <MudTh>RequestName</MudTh>
-                                    <MudTh>Type</MudTh>
-                                    <MudTh>Order</MudTh>
-                                    <MudTh>Timeout</MudTh>
-                                    <MudTh>DelayAfter</MudTh>
-                                    <MudTh>Act</MudTh>
-                                </HeaderContent>
-                                <RowTemplate>
-                                    <MudTd>
-                                        <MudText>@context.Order</MudText>
-                                    </MudTd>
-                                    <MudTd>
-                                        <MudText>@context.RequestName</MudText>
-                                    </MudTd>
-                                    <MudTd>
-                                        <MudText>@context.StepType</MudText>
-                                    </MudTd>
-                                    <MudTd>
-                                        <MudTextField @bind-Value="context.TimeOut" Variant="Variant.Outlined" />
-                                    </MudTd>
-                                    <MudTd>
-                                        <MudTextField @bind-Value="context.DelayAfter" Variant="Variant.Outlined" />
-                                    </MudTd>
-                                    <MudTd>
-                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="(() => RemoveStep(context))" />
-                                    </MudTd>
-                                </RowTemplate>
-                            </MudTable>
-                            <MudSpacer />
-                        </MudItem> *@
+                        <MudItem xs="6">
+                            <MudButton Variant="Variant.Outlined"
+                                       ButtonType="ButtonType.Submit"
+                                       StartIcon="@Icons.Material.Filled.Save"
+                                       DisableElevation="true"
+                                       Size="Size.Small"
+                                       Style="background-color: white;"
+                                       Color="Color.Primary"
+                                       OnClick="Save">
+                                Save
+                            </MudButton>
+                        </MudItem>
                     </MudGrid>
                 </MudPaper>
             </MudItem>
@@ -116,6 +94,10 @@
             <MudItem xs="4" sm="4" md="4" lg="4">
                 <UI.Components.Lists.ApiRequestList OnRequestSelected="AddStep">
                 </UI.Components.Lists.ApiRequestList>
+                
+            </MudItem>
+            <MudItem xs="4" sm="4" md="4" lg="4">
+                <UI.Components.Lists.ScenarioList></UI.Components.Lists.ScenarioList>
             </MudItem>
         </MudGrid>
     </MudContainer>

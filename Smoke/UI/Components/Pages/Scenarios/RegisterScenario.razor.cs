@@ -54,6 +54,23 @@ namespace UI.Components.Pages.Scenarios
             }
         }
 
+        private async void Save()
+        {
+            var saved = await ScenarioDataService.UpdateScenario(RegisteredScenario, Cts.Token);
+            if (saved.Success)
+            {
+                ToastService.ShowSuccess("Scenario registered");
+                RegisteredScenario = saved.Data;
+                StateHasChanged();
+            }
+
+            else
+            {
+                ToastService.ShowError("Error occurred");
+            }
+        }
+
+
 
         private void AddStep(ApiRequestViewModel request)
         {

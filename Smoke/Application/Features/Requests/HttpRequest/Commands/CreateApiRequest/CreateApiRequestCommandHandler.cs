@@ -19,6 +19,6 @@ internal sealed class CreateApiRequestCommandHandler : ICommandHandler<CreateApi
     {
         var result = _curlParserService.ParseCurlCommand(command.Name, command.Curl);
 
-        return _requestRepository.Save(result);
+        return _requestRepository.Create(result);
     }
 }

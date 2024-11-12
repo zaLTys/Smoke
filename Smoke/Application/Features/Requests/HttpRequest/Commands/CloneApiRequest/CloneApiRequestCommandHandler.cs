@@ -31,6 +31,6 @@ internal sealed class CloneApiRequestCommandHandler : ICommandHandler<CloneApiRe
             Name = apiRequest.Name + " - Clone"
         };
 
-        return _requestRepository.Save(clonedRequest);
+        return _requestRepository.Create(clonedRequest);
     }
 }

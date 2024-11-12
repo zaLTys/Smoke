@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
+using AutoMapper;
 using Blazored.LocalStorage;
 using UI.Contracts;
 using UI.Responses;
@@ -17,27 +18,27 @@ namespace UI.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<ScenarioViewModel>> AssignApiRequestToScenario(Guid apiRequestId, Guid scenarioId, CancellationToken cancellationToken)
-        {
-            var assignStepRequest = new AssignStepRequest
-            {
-                ScenarioId = scenarioId,
-                RequestId = apiRequestId
-            };
-
-            var response = await _client.ApiScenariosAssignStepAsync(assignStepRequest, cancellationToken);
-            var mappedElement = _mapper.Map<ScenarioViewModel>(response);
-            return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
-        }
-
         public async Task<ServiceResponse<ScenarioViewModel>> CreateScenario(string scenarioName, CancellationToken cancellationToken)
         {
-            var createScenarioRequest = new CreateScenarioRequest
+            var createScenarioRequest = new Base.CreateScenarioRequest
             {
                 Name = scenarioName
             };
 
             var response = await _client.ApiScenariosCreateAsync(createScenarioRequest, cancellationToken);
+            var mappedElement = _mapper.Map<ScenarioViewModel>(response);
+            return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
+        }
+
+        public async Task<ServiceResponse<ScenarioViewModel>> UpdateScenario(ScenarioViewModel scenario, CancellationToken cancellationToken)
+        {
+            var mapped = _mapper.Map<Scenario>(scenario);
+            var updateScenarioRequest = new Base.UpdateScenarioRequest
+            {
+                Scenario = mapped
+            };
+
+            var response = await _client.ApiScenariosUpdateAsync(updateScenarioRequest, cancellationToken);
             var mappedElement = _mapper.Map<ScenarioViewModel>(response);
             return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
         }
@@ -49,13 +50,13 @@ namespace UI.Services
             return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
         }
 
-        //public async Task<ServiceResponse<List<ScenarioViewModel>>> GetAllScenarios(CancellationToken cancellationToken)
-        //{
-        //    // Assuming there is a client method to get all scenarios
-        //    var response = await _client.apis(cancellationToken);
-        //    var mappedList = _mapper.Map<List<ScenarioViewModel>>(response);
-        //    return ServiceResponse<List<ScenarioViewModel>>.FromData(mappedList);
-        //}
+        public async Task<ServiceResponse<List<ScenarioViewModel>>> GetAllScenarios(CancellationToken cancellationToken)
+        {
+            // Assuming there is a client method to get all scenarios
+            var response = await _client.ApiScenariosAllAsync(cancellationToken);
+            var mappedList = _mapper.Map<List<ScenarioViewModel>>(response);
+            return ServiceResponse<List<ScenarioViewModel>>.FromData(mappedList);
+        }
 
         //public async Task<ServiceResponse<bool>> DeleteScenario(Guid scenarioId, CancellationToken cancellationToken)
         //{

@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories.InMemory
     {
         private readonly ConcurrentDictionary<Guid, Scenario> _scenarios = new();
 
-        public Scenario Save(Scenario scenario)
+        public Scenario Create(Scenario scenario)
         {
             if (_scenarios.TryAdd(scenario.Id, scenario))
             {
@@ -56,15 +56,16 @@ namespace Infrastructure.Repositories.InMemory
             throw new KeyNotFoundException("No scenario with the specified ID was found.");
         }
 
-        public Scenario AssignStep(Guid requestId, Guid scenarioId, int order)
+        public Scenario UpdateScenario(Guid scenarioId, Scenario scenario)
         {
             if (_scenarios.TryGetValue(scenarioId, out var existingScenario))
             {
                 var updatedScenario = existingScenario with
                 {
-                    ModifiedDate = DateTime.UtcNow
+                    ModifiedDate = DateTime.UtcNow,
+                    Steps = scenario.Steps,
+                    Name = scenario.Name ?? existingScenario.Name,
                 };
-                updatedScenario.Steps.Add(ScenarioStep.Default(requestId, order));
 
                 _scenarios[scenarioId] = updatedScenario;
                 return _scenarios[scenarioId];

@@ -1,6 +1,7 @@
 ﻿using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
+using Application.Features.Requests.HttpRequest.Queries.GetApiRequestList;
 using Domain.Entities.Scenarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,17 @@ public sealed class ScenariosController : ApiController
         return Ok(result);
     }
 
+    [HttpGet("all")]
+    [ProducesResponseType(typeof(ICollection<Scenario>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetScenarios(
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new GetScenarioListQuery(), cancellationToken);
+
+        return Ok(result);
+    }
+
     [HttpGet("{id:Guid}")]
     [ProducesResponseType(typeof(Scenario), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,14 +60,14 @@ public sealed class ScenariosController : ApiController
         return Ok(result);
     }
 
-    [HttpPost("assignStep")]
-    [ProducesResponseType(typeof(Scenario), StatusCodes.Status201Created)]
+    [HttpPost("update")]
+    [ProducesResponseType(typeof(Scenario), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AssignStep(
-    [FromBody] AssignStepRequest request,
+    public async Task<IActionResult> UpdateScenario(
+    [FromBody] UpdateScenarioRequest request,
     CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new AssignStepCommand(request.RequestId, request.ScenarioId, request.Order), cancellationToken);
+        var result = await Sender.Send(new UpdateScenarioCommand(request.Scenario), cancellationToken);
 
         return Ok(result);
     }
