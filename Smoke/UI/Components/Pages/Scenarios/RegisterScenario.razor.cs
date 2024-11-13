@@ -46,6 +46,10 @@ namespace UI.Components.Pages.Scenarios
                         RegisteredScenario = created.Data;
                         StateHasChanged();
                     }
+                    else
+                    {
+                        ToastService.ShowError(created.Message ?? "Error occurred");
+                    }
                 }
                 else
                 {
@@ -66,7 +70,7 @@ namespace UI.Components.Pages.Scenarios
 
             else
             {
-                ToastService.ShowError("Error occurred");
+                ToastService.ShowError(saved.Message ?? "Error occurred");
             }
         }
 
@@ -101,7 +105,6 @@ namespace UI.Components.Pages.Scenarios
 
         private void UpdateSteps()
         {
-            // Recalculate order
             for (int i = 0; i < ScenarioSteps.Count; i++)
             {
                 ScenarioSteps[i].Order = i + 1;

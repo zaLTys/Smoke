@@ -5,11 +5,13 @@
 
 <Content State="@State" ErrorMessage="@ErrorMessage">
     <MudContainer Fixed="true">
-            <MudGrid>
-                <MudItem xs="12" sm="6" md="6" lg="6">
-                    <MudPaper Class="pa-4 my-2" Style="width:100%;">
-                        <MudText Typo="Typo.h6">Register request</MudText>
-                        <MudGrid>
+        <MudGrid>
+            <MudItem xs="12" sm="8" md="8" lg="8">
+                <MudPaper Class="pa-4 my-2" Style="width:100%;">
+                    <MudText Typo="Typo.h6">Http Requests</MudText>
+                    <MudGrid>
+                        @if (RegisteredRequest == null)
+                        {
                             <MudItem xs="12">
                                 <MudTextField Label="Name"
                                               @bind-Value="RequestToRegister.Name"
@@ -20,21 +22,9 @@
                             <MudItem xs="12">
                                 <MudTextField Label="Curl"
                                               @bind-Value="RequestToRegister.Curl"
-                                              Lines="13"
+                                              Lines="3"
                                               Variant="Variant.Outlined">
                                 </MudTextField>
-                            </MudItem>
-                            <MudItem xs="6">
-                                <MudButton Variant="Variant.Outlined"
-                                           ButtonType="ButtonType.Submit"
-                                           StartIcon="@Icons.Material.Filled.Check"
-                                           DisableElevation="true"
-                                           Size="Size.Small"
-                                           Style="background-color: darkorange;"
-                                           Color="Color.Primary"
-                                           OnClick="Execute">
-                                    Execute
-                                </MudButton>
                             </MudItem>
                             <MudItem xs="6">
                                 <MudButton Variant="Variant.Outlined"
@@ -48,112 +38,124 @@
                                     Register
                                 </MudButton>
                             </MudItem>
+                        }
 
+                        @if (RegisteredRequest != null)
+                        {
                             <MudItem xs="12" sm="12" md="12" lg="12">
+                                <MudText Typo="Typo.h6">Registered Request</MudText>
                                 <MudGrid>
                                     <MudItem xs="12">
-                                        <MudText Typo="Typo.h6">Output</MudText>
+                                        <MudTextField Label="Id" @bind-Value="RegisteredRequest.Id" ReadOnly="true" Variant="Variant.Outlined" />
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <MudTextField Label="Name" @bind-Value="RegisteredRequest.Name" Variant="Variant.Outlined" />
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <MudTextField Label="Type" @bind-Value="RegisteredRequest.Type" Variant="Variant.Outlined" />
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <MudTextField Label="HTTP Method" @bind-Value="RegisteredRequest.ApiRequestData.HttpMethod" Variant="Variant.Outlined" />
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <MudTextField Label="URL" @bind-Value="RegisteredRequest.ApiRequestData.Url" Variant="Variant.Outlined" />
+                                    </MudItem>
+
+                                    <!-- Headers Table -->
+                                    <MudItem xs="12">
+                                        <MudExpansionPanels>
+                                            <MudExpansionPanel>
+                                                <MudTable Items="HeaderEntries" Bordered="true" Hover="true">
+                                                    <HeaderContent>
+                                                        <MudTh>Key</MudTh>
+                                                        <MudTh>Value</MudTh>
+                                                        <MudTh>Actions</MudTh>
+                                                    </HeaderContent>
+                                                    <RowTemplate>
+                                                        <MudTd>
+                                                            <MudTextField @bind-Value="context.Key" Variant="Variant.Outlined" />
+                                                        </MudTd>
+                                                        <MudTd>
+                                                            <MudTextField @bind-Value="context.Value" Variant="Variant.Outlined" />
+                                                        </MudTd>
+                                                        <MudTd>
+                                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="(() => RemoveHeader(context))" />
+                                                        </MudTd>
+                                                    </RowTemplate>
+                                                    <FooterContent>
+                                                        <MudTd></MudTd>
+                                                        <MudTd></MudTd>
+                                                        <MudTd>
+                                                            <MudButton Variant="Variant.Outlined"
+                                                                       StartIcon="@Icons.Material.Filled.Add"
+                                                                       OnClick="AddHeader"
+                                                                       Size="Size.Small"
+                                                                       Style="background-color: white;"
+                                                                       Color="Color.Primary">
+                                                                Add Header
+                                                            </MudButton>
+                                                        </MudTd>
+                                                    </FooterContent>
+                                                </MudTable>
+                                            </MudExpansionPanel>
+                                        </MudExpansionPanels>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudTextField Label="Body" @bind-Value="RegisteredRequest.ApiRequestData.Body" Lines="5" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="12">
-                                        <MudTextField Label="Result"
-                                                      @bind-Value="Output"
-                                                      Variant="Variant.Outlined"
-                                                      Lines="13"
-                                                      Style="width: 100%; height: 100%;"
-                                                      ReadOnly="true" />
+                                        <MudTextField Label="Expected Response" @bind-Value="RegisteredRequest.ApiRequestData.ExpectedResponse" Lines="5" Variant="Variant.Outlined" />
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <MudButton Variant="Variant.Outlined"
+                                                   ButtonType="ButtonType.Submit"
+                                                   StartIcon="@Icons.Material.Filled.Save"
+                                                   Style="background-color: white;"
+                                                   OnClick="Update">
+                                            Save
+                                        </MudButton>
                                     </MudItem>
                                 </MudGrid>
                             </MudItem>
-
-                        </MudGrid>
-                    </MudPaper>
-                </MudItem>
-
-                <!-- Editable ApiRequestViewModel Form After Registration -->
-                @if (RegisteredRequest != null)
-                {
-                    <MudItem xs="6" sm="6" md="6" lg="6">
-                        <MudPaper Class="pa-4 my-2" Style="width:100%;">
-                            <MudText Typo="Typo.h6">Registered Request</MudText>
+                        }
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudDivider></MudDivider>
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudGrid>
-                                <MudItem xs="12">
-                                    <MudTextField Label="Id" @bind-Value="RegisteredRequest.Id" ReadOnly="true" Variant="Variant.Outlined" />
-                                </MudItem>
-                                <MudItem xs="6">
-                                    <MudTextField Label="Name" @bind-Value="RegisteredRequest.Name" Variant="Variant.Outlined" />
-                                </MudItem>
-                                <MudItem xs="6">
-                                    <MudTextField Label="Type" @bind-Value="RegisteredRequest.Type" Variant="Variant.Outlined" />
-                                </MudItem>
-                                <MudItem xs="6">
-                                    <MudTextField Label="HTTP Method" @bind-Value="RegisteredRequest.ApiRequestData.HttpMethod" Variant="Variant.Outlined" />
-                                </MudItem>
-                                <MudItem xs="6">
-                                    <MudTextField Label="URL" @bind-Value="RegisteredRequest.ApiRequestData.Url" Variant="Variant.Outlined" />
-                                </MudItem>
-
-                                <!-- Headers Table -->
-                                <MudItem xs="12">
-                                    <MudText Typo="Typo.h6">Headers</MudText>
-                                    <MudTable Items="HeaderEntries" Bordered="true" Hover="true">
-                                        <HeaderContent>
-                                            <MudTh>Key</MudTh>
-                                            <MudTh>Value</MudTh>
-                                            <MudTh>Actions</MudTh>
-                                        </HeaderContent>
-                                        <RowTemplate>
-                                            <MudTd>
-                                                <MudTextField @bind-Value="context.Key" Variant="Variant.Outlined" />
-                                            </MudTd>
-                                            <MudTd>
-                                                <MudTextField @bind-Value="context.Value" Variant="Variant.Outlined" />
-                                            </MudTd>
-                                            <MudTd>
-                                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="(() => RemoveHeader(context))" />
-                                            </MudTd>
-                                        </RowTemplate>
-                                        <FooterContent>
-                                            <MudTd></MudTd>
-                                            <MudTd></MudTd>
-                                            <MudTd>
-                                                <MudButton Variant="Variant.Outlined"
-                                                           StartIcon="@Icons.Material.Filled.Add"
-                                                           OnClick="AddHeader"
-                                                           Size="Size.Small"
-                                                           Style="background-color: white;"
-                                                           Color="Color.Primary">
-                                                    Add Header
-                                                </MudButton>
-                                            </MudTd>
-                                        </FooterContent>
-                                    </MudTable>
-                                    <MudSpacer />
-                                </MudItem>
-
-                                <MudItem xs="12">
-                                    <MudTextField Label="Body" @bind-Value="RegisteredRequest.ApiRequestData.Body" Lines="5" Variant="Variant.Outlined" />
-                                </MudItem>
-                                <MudItem xs="12">
-                                    <MudTextField Label="Expected Response" @bind-Value="RegisteredRequest.ApiRequestData.ExpectedResponse" Lines="5" Variant="Variant.Outlined" />
-                                </MudItem>
-                                <MudItem xs="12">
+                                <MudItem xs="12" sm="12" md="12" lg="12">
                                     <MudButton Variant="Variant.Outlined"
                                                ButtonType="ButtonType.Submit"
-                                               StartIcon="@Icons.Material.Filled.Save"
-                                               Style="background-color: white;"
-                                               OnClick="Update">
-                                        Save
+                                               StartIcon="@Icons.Material.Filled.Check"
+                                               DisableElevation="true"
+                                               Size="Size.Small"
+                                               Style="background-color: darkorange;"
+                                               Color="Color.Primary"
+                                               OnClick="Execute">
+                                        Execute
                                     </MudButton>
                                 </MudItem>
+                                <MudItem xs="12">
+                                    <MudTextField Label="Output"
+                                                  @bind-Value="Output"
+                                                  Variant="Variant.Outlined"
+                                                  Lines="5"
+                                                  Style="width: 100%; height: 100%;"
+                                                  ReadOnly="true" />
+                                </MudItem>
                             </MudGrid>
-                        </MudPaper>
-                    </MudItem>
-                }
-                <MudItem xs="6" sm="6" md="6" lg="6">
-                    <UI.Components.Lists.ApiRequestList>
+                        </MudItem>
 
-                    </UI.Components.Lists.ApiRequestList>
-                </MudItem>
-            </MudGrid>
-        </MudContainer>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="4" sm="4" md="4" lg="4">
+                <UI.Components.Lists.ApiRequestList>
+
+                </UI.Components.Lists.ApiRequestList>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
 </Content>
