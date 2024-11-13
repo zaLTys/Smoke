@@ -12,7 +12,7 @@ public class CurlStringEscapeMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if ((context.Request.Path == "/api/Requests/create" || context.Request.Path == "/api/Requests/execute")
+        if ((context.Request.Path == "/api/Requests/create" || context.Request.Path == "/api/Requests/testExecute")
              && context.Request.Method == HttpMethods.Post)
         {
             // Read the original request body

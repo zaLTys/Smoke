@@ -2,6 +2,7 @@
 using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.ExecuteApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
+using Application.Features.Requests.HttpRequest.Commands.TestExecuteApiRequest;
 using Application.Features.Requests.HttpRequest.Commands.UpdateApiRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequest;
 using Application.Features.Requests.HttpRequest.Queries.GetApiRequestList;
@@ -41,14 +42,26 @@ public sealed class RequestsController : ApiController
         return Ok(result);
     }
 
+    [HttpPost("testExecute")]
+    [ProducesResponseType(typeof(RequestResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> TestExecuteApiRequest(
+    [FromBody] string curl,
+    CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new TestExecuteApiRequestCommand(curl), cancellationToken);
+
+        return Ok(result);
+    }
+
     [HttpPost("execute")]
     [ProducesResponseType(typeof(RequestResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ExecuteApiRequest(
-    [FromBody] string curl,
-    CancellationToken cancellationToken)
+        [FromBody] ExecuteApiRequest request,
+        CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new ExecuteApiRequestCommand(curl), cancellationToken);
+        var result = await Sender.Send(new ExecuteApiRequestCommand(request.RequestId), cancellationToken);
 
         return Ok(result);
     }

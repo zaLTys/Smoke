@@ -3,6 +3,6 @@ using Domain.Entities.Requests;
 
 namespace Application.Features.Requests.HttpRequest.Commands.ExecuteApiRequest
 {
-    public record ExecuteApiRequestCommand(string Curl) : ICommand<RequestResult>;
+    public record ExecuteApiRequestCommand(Guid RequestId) : ICommand<RequestResult>;
 
 }
