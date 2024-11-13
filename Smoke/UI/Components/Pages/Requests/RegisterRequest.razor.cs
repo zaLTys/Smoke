@@ -1,11 +1,10 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Newtonsoft.Json;
-using System.Runtime;
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
+using UI.Services;
 using UI.ViewModels.Requests;
 
 namespace UI.Components.Pages.Requests
@@ -13,16 +12,20 @@ namespace UI.Components.Pages.Requests
     public partial class RegisterRequest : DataLoader
     {
         [Inject] IToastService ToastService { get; set; } = default!;
-        [Inject] public IApiRequestDataService ApiRequestDataService { get; set; }
+        [Inject] IApiRequestDataService ApiRequestDataService { get; set; }
+        [Inject] IStateChangeService StateChangeService { get; set; } = default!;
 
         public RegisterRequestViewModel RequestToRegister { get; set; } = new RegisterRequestViewModel();
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
 
-        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
+
+        [Parameter]
+        public Guid? RequestId { get; set; }
 
         public string Message { get; set; }
         public string Output { get; set; } = string.Empty;
-        public ApiRequestViewModel RegisteredRequest { get; set; } = null;
+        public ApiRequestViewModel ApiRequest { get; set; } = null;
 
         private List<HeaderViewModel> HeaderEntries { get; set; } = new();
 
@@ -42,9 +45,7 @@ namespace UI.Components.Pages.Requests
                     if (created.Success)
                     {
                         ToastService.ShowSuccess("Request registered");
-                        RegisteredRequest = created.Data;
-                        HeaderEntries = created.Data.ApiRequestData.Headers;
-                        StateHasChanged();
+                        NavigateToEdit(created.Data);
                     }
                 }
                 else
@@ -52,6 +53,11 @@ namespace UI.Components.Pages.Requests
                     ToastService.ShowError("Request with that name already exists");
                 }
             }
+        }
+
+        private async void NavigateToEdit(ApiRequestViewModel request)
+        {
+            NavigationManager.NavigateTo($"/requests/{request.Id}", forceLoad: true);
         }
 
         protected async void Execute()
@@ -74,11 +80,11 @@ namespace UI.Components.Pages.Requests
 
         protected async void Update()
         {
-            var response = await ApiRequestDataService.UpdateApiRequest(RegisteredRequest, Cts.Token);
+            var response = await ApiRequestDataService.UpdateApiRequest(ApiRequest, Cts.Token);
             if (response.Success)
             {
                 ToastService.ShowSuccess("Saved successfully");
-                RegisteredRequest = response.Data;
+                ApiRequest = response.Data;
                 HeaderEntries = response.Data.ApiRequestData.Headers;
                 Output = JsonConvert.SerializeObject(response.Data, Formatting.Indented);
                 StateHasChanged();
@@ -104,7 +110,7 @@ namespace UI.Components.Pages.Requests
 
         private void UpdateHeaders()
         {
-            RegisteredRequest.ApiRequestData.Headers = HeaderEntries;
+            ApiRequest.ApiRequestData.Headers = HeaderEntries;
         }
 
 
@@ -114,11 +120,11 @@ namespace UI.Components.Pages.Requests
             {
                 var tasks = new List<Task<IServiceResponse>>();
 
-                //var scenariosTask = ScenarioDataService.GetScenariosWithApiRequests(Cts.Token);
-                //var athletesTask = ApiRequestDataService.GetAllApiRequests(Cts.Token);
-
-                //tasks.Add(Task.Run(async () => await scenariosTask as IServiceResponse));
-                //tasks.Add(Task.Run(async () => await athletesTask as IServiceResponse));
+                if (RequestId != null)
+                {
+                    var requestTask = ApiRequestDataService.GetApiRequestById((Guid)RequestId, Cts.Token);
+                    tasks.Add(Task.Run(async () => await requestTask as IServiceResponse));
+                }
 
                 return tasks;
             }
@@ -128,25 +134,15 @@ namespace UI.Components.Pages.Requests
 
         protected override Task HandleLoadSuccess(IServiceResponse response)
         {
-            //switch (response)
-            //{
-            //    case ServiceResponse<List<ScenarioManagementListViewModel>> scenarioResponse when scenarioResponse.Success:
-            //        Scenarios = scenarioResponse.Data;
-            //        ScenarioApiRequests = scenarioResponse.Data.SelectMany(x => x.ApiRequests).ToList();
-            //        break;
-            //    case ServiceResponse<List<ApiRequestListViewModel>> athleteResponse when athleteResponse.Success:
-            //        var scenariolessApiRequests = athleteResponse.Data.Where(x => x.ScenarioId == null).Select(x => new ScenarioManagementApiRequestViewModel
-            //        {
-            //            ApiRequestId = x.Id,
-            //            Name = $"{x.FirstName} {x.LastName}",
-            //            ProfileImageUrl = x.ProfileImageUrl,
-            //            ScenarioId = Guid.Empty
-            //        }).ToList();
-            //        ScenarioApiRequests.AddRange(scenariolessApiRequests);
-            //        break;
-            //    default:
-            //        throw new InvalidOperationException($"Unhandled response type: {response.GetType().Name}");
-            //}
+            switch (response)
+            {
+                case ServiceResponse<ApiRequestViewModel> apiRequestResponse when apiRequestResponse.Success:
+                    ApiRequest = apiRequestResponse.Data;
+                    HeaderEntries = apiRequestResponse.Data.ApiRequestData.Headers;
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unhandled response type: {response.GetType().Name}");
+            }
 
             return Task.CompletedTask;
         }

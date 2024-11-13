@@ -47,19 +47,11 @@ namespace UI.Services
             return ServiceResponse<List<ApiRequestViewModel>>.FromData(mappedElement);
         }
 
-        //public Task<ApiResponse<ApiRequestViewModel>> UpdateApiRequest(ApiRequestViewModel eventDetailViewModel)
-        //{
-        //    try
-        //    {
-        //        //UpdateElementCommand updateElementCommand = _mapper.Map<UpdateElementCommand>(elementDetailViewModel);
-        //        //await _client.UpdateElementAsync(updateElementCommand);
-        //        return Task.FromResult(new ApiResponse<ApiRequestViewModel>());
-        //    }
-        //    catch (ApiException ex)
-        //    {
-        //        throw;
-        //        //return Task.FromResult(ConvertApiExceptions<ApiRequest>(ex));
-        //    }
-        //}
+        public async Task<ServiceResponse<ApiRequestViewModel>> GetApiRequestById(Guid requestId, CancellationToken cancellationToken)
+        {
+            var response = await _client.ApiRequestsAsync(requestId, cancellationToken);
+            var mappedElement = _mapper.Map<ApiRequestViewModel>(response);
+            return ServiceResponse<ApiRequestViewModel>.FromData(mappedElement);
+        }
     }
 }

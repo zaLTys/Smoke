@@ -40,10 +40,7 @@ builder.Services.AddSingleton(new HttpClient
 
 
 builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
-builder.Services.AddHttpClient<IClient, Client>(client => new Client("https://localhost:7051", new HttpClient()
-{
-  //  BaseAddress = new Uri("https://localhost:7051")
-}))
+builder.Services.AddHttpClient<IClient, Client>(client => new Client("https://localhost:7051", new HttpClient()))
     .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
 //Hax:{

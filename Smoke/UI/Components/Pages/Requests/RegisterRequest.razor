@@ -1,4 +1,5 @@
 ﻿@page "/requests"
+@page "/requests/{RequestId:guid}"
 @using UI.Components.Loader
 @inherits DataLoader
 
@@ -8,10 +9,12 @@
         <MudGrid>
             <MudItem xs="12" sm="8" md="8" lg="8">
                 <MudPaper Class="pa-4 my-2" Style="width:100%;">
-                    <MudText Typo="Typo.h6">Http Requests</MudText>
                     <MudGrid>
-                        @if (RegisteredRequest == null)
+                        @if (ApiRequest == null)
                         {
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.h6">Http Requests</MudText>
+                            </MudItem>
                             <MudItem xs="12">
                                 <MudTextField Label="Name"
                                               @bind-Value="RequestToRegister.Name"
@@ -40,25 +43,25 @@
                             </MudItem>
                         }
 
-                        @if (RegisteredRequest != null)
+                        @if (ApiRequest != null)
                         {
                             <MudItem xs="12" sm="12" md="12" lg="12">
                                 <MudText Typo="Typo.h6">Registered Request</MudText>
                                 <MudGrid>
                                     <MudItem xs="12">
-                                        <MudTextField Label="Id" @bind-Value="RegisteredRequest.Id" ReadOnly="true" Variant="Variant.Outlined" />
+                                        <MudTextField Label="Id" @bind-Value="ApiRequest.Id" ReadOnly="true" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="6">
-                                        <MudTextField Label="Name" @bind-Value="RegisteredRequest.Name" Variant="Variant.Outlined" />
+                                        <MudTextField Label="Name" @bind-Value="ApiRequest.Name" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="6">
-                                        <MudTextField Label="Type" @bind-Value="RegisteredRequest.Type" Variant="Variant.Outlined" />
+                                        <MudTextField Label="Type" @bind-Value="ApiRequest.Type" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="6">
-                                        <MudTextField Label="HTTP Method" @bind-Value="RegisteredRequest.ApiRequestData.HttpMethod" Variant="Variant.Outlined" />
+                                        <MudTextField Label="HTTP Method" @bind-Value="ApiRequest.ApiRequestData.HttpMethod" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="6">
-                                        <MudTextField Label="URL" @bind-Value="RegisteredRequest.ApiRequestData.Url" Variant="Variant.Outlined" />
+                                        <MudTextField Label="URL" @bind-Value="ApiRequest.ApiRequestData.Url" Variant="Variant.Outlined" />
                                     </MudItem>
 
                                     <!-- Headers Table -->
@@ -102,10 +105,10 @@
                                     </MudItem>
 
                                     <MudItem xs="12">
-                                        <MudTextField Label="Body" @bind-Value="RegisteredRequest.ApiRequestData.Body" Lines="5" Variant="Variant.Outlined" />
+                                        <MudTextField Label="Body" @bind-Value="ApiRequest.ApiRequestData.Body" Lines="5" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="12">
-                                        <MudTextField Label="Expected Response" @bind-Value="RegisteredRequest.ApiRequestData.ExpectedResponse" Lines="5" Variant="Variant.Outlined" />
+                                        <MudTextField Label="Expected Response" @bind-Value="ApiRequest.ApiRequestData.ExpectedResponse" Lines="5" Variant="Variant.Outlined" />
                                     </MudItem>
                                     <MudItem xs="12">
                                         <MudButton Variant="Variant.Outlined"
@@ -152,8 +155,7 @@
             </MudItem>
 
             <MudItem xs="4" sm="4" md="4" lg="4">
-                <UI.Components.Lists.ApiRequestList>
-
+                <UI.Components.Lists.ApiRequestList OnRequestSelected="NavigateToEdit">
                 </UI.Components.Lists.ApiRequestList>
             </MudItem>
         </MudGrid>

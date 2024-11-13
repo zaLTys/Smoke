@@ -5,6 +5,7 @@ using MudBlazor;
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
+using UI.Services;
 using UI.ViewModels.Requests;
 using UI.ViewModels.Scenarios;
 
@@ -12,10 +13,13 @@ namespace UI.Components.Pages.Scenarios
 {
     public partial class RegisterScenario : DataLoader
     {
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] IStateChangeService StateChangeService { get; set; } = default!;
         [Inject] IToastService ToastService { get; set; } = default!;
+
         [Inject] public IApiRequestDataService ApiRequestDataService { get; set; }
         [Inject] public IScenarioDataService ScenarioDataService { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
+
 
         public string ScenarioNameToRegister { get; set; } = string.Empty;
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
@@ -44,6 +48,7 @@ namespace UI.Components.Pages.Scenarios
                     {
                         ToastService.ShowSuccess("Scenario registered");
                         RegisteredScenario = created.Data;
+                        StateChangeService.CallRequestRefresh();
                         StateHasChanged();
                     }
                     else

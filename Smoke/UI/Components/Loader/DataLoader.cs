@@ -18,8 +18,17 @@ namespace UI.Components.Loader
 
         protected override async Task OnInitializedAsync()
         {
-            StateChangeService.RefreshRequested += StateHasChanged;
+            StateChangeService.RefreshRequested += async () =>
+            {
+                await LoadDataAsync(); //reload data
+                StateHasChanged(); // Trigger UI re-render
+            };
 
+            await LoadDataAsync();
+        }
+
+        private async Task LoadDataAsync()
+        {
             try
             {
                 var responses = await Task.WhenAll(DataLoadRequests);
