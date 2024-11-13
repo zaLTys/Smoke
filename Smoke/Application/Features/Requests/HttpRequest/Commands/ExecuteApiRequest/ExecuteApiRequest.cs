@@ -1,3 +1,3 @@
-﻿namespace Application.Features.SellerInventory.SellerDeals.Commands.CreateDeal;
+﻿namespace Application.Features.Requests.HttpRequest.Commands.ExecuteApiRequest;
 
-public sealed record ExecuteApiRequest(Guid requestId);
+public sealed record ExecuteApiRequest(Guid RequestId);

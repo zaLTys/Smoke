@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+﻿using Application.Features.Requests.HttpRequest.Commands.ExecuteApiRequest;
+using AutoMapper;
 using Blazored.LocalStorage;
 using UI.Contracts;
 using UI.Responses;
 using UI.Services.Base;
 using UI.ViewModels.Requests;
-using IClient = UI.Services.Base.IClient;
+using ExecuteApiRequest = UI.Services.Base.ExecuteApiRequest;
 
 namespace UI.Services
 {
@@ -25,9 +26,16 @@ namespace UI.Services
             return ServiceResponse<ApiRequestViewModel>.FromData(mappedElement);
         }
 
-        public async Task<ServiceResponse<RequestResult>> ExecuteApiRequest(string curl, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<RequestResult>> ExecuteApiRequest(Guid requestId, CancellationToken cancellationToken)
         {
-            var response = await _client.ApiRequestsExecuteAsync(curl, cancellationToken);
+            var response = await _client.ApiRequestsExecuteAsync(new ExecuteApiRequest { RequestId = requestId}, cancellationToken);
+            var mappedElement = _mapper.Map<RequestResult>(response);
+            return ServiceResponse<RequestResult>.FromData(mappedElement);
+        }
+
+        public async Task<ServiceResponse<RequestResult>> TestExecuteApiRequest(string curl, CancellationToken cancellationToken)
+        {
+            var response = await _client.ApiRequestsTestExecuteAsync(curl, cancellationToken);
             var mappedElement = _mapper.Map<RequestResult>(response);
             return ServiceResponse<RequestResult>.FromData(mappedElement);
         }

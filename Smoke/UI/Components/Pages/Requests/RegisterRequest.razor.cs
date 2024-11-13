@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
-using UI.Services;
+using UI.Services.Base;
 using UI.ViewModels.Requests;
 
 namespace UI.Components.Pages.Requests
@@ -62,7 +62,16 @@ namespace UI.Components.Pages.Requests
 
         protected async void Execute()
         {
-            var response = await ApiRequestDataService.ExecuteApiRequest(RequestToRegister.Curl, Cts.Token);
+            var response = new ServiceResponse<RequestResult>();
+            if (RegisteredRequest != null)
+            {
+                response = await ApiRequestDataService.ExecuteApiRequest(RegisteredRequest.Id, Cts.Token);
+            }
+            else
+            {
+                response = await ApiRequestDataService.TestExecuteApiRequest(RequestToRegister.Curl, Cts.Token);
+            }
+
             if (response.Data.IsSuccess)
             {
                 ToastService.ShowSuccess("Executed successfully");
