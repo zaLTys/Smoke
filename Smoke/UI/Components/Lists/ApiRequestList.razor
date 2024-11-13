@@ -7,8 +7,16 @@
         <MudGrid>
             <MudItem xs="12" sm="6" md="6" lg="6">
                 <MudPaper Class="pa-4 my-2" Style="width:100%;">
-                    <MudText Typo="Typo.h6">API Requests</MudText>
                     <MudGrid>
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h6">API Requests</MudText>
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.Add"
+                                       OnClick="@Clear">
+                                       Add
+                            </MudButton>
+                        </MudItem>
                         <MudItem xs="12">
                             <MudTextField @bind-Value="SearchText"
                                           Label="Search"

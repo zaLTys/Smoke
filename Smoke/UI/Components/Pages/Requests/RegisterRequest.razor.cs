@@ -13,7 +13,6 @@ namespace UI.Components.Pages.Requests
     {
         [Inject] IToastService ToastService { get; set; } = default!;
         [Inject] IApiRequestDataService ApiRequestDataService { get; set; }
-        [Inject] IStateChangeService StateChangeService { get; set; } = default!;
 
         public RegisterRequestViewModel RequestToRegister { get; set; } = new RegisterRequestViewModel();
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
@@ -63,9 +62,9 @@ namespace UI.Components.Pages.Requests
         protected async void Execute()
         {
             var response = new ServiceResponse<RequestResult>();
-            if (RegisteredRequest != null)
+            if (ApiRequest != null)
             {
-                response = await ApiRequestDataService.ExecuteApiRequest(RegisteredRequest.Id, Cts.Token);
+                response = await ApiRequestDataService.ExecuteApiRequest(ApiRequest.Id, Cts.Token);
             }
             else
             {

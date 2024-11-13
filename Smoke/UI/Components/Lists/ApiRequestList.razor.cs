@@ -2,6 +2,7 @@
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
+using UI.Services;
 using UI.ViewModels.Requests;
 
 namespace UI.Components.Lists
@@ -13,6 +14,9 @@ namespace UI.Components.Lists
 
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
+        
+        [Inject]
+        private IStateChangeService StateChangeService { get; set; } = default!;
 
         [Parameter]
         public EventCallback<ApiRequestViewModel> OnRequestSelected { get; set; }
@@ -47,6 +51,13 @@ namespace UI.Components.Lists
                 FilteredRequests = Requests.Where(r => r.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             InvokeAsync(StateHasChanged);
+        }
+
+        private void Clear()
+        {
+            //TODO: remove HAX :( 
+            NavigationManager.NavigateTo("/", false);
+            NavigationManager.NavigateTo("/requests", false);    
         }
 
         protected override List<Task<IServiceResponse>> DataLoadRequests
