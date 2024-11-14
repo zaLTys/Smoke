@@ -7,9 +7,6 @@ Users can provide cURL, database requests, save them, add placeholders to be dyn
 
 These requests can be chained and manipulated together to create complex scenarios where multiple APIs are called, and results are evaluated.
 
-Latest view (as of 2024-09-11)
-![image](https://github.com/user-attachments/assets/3936bd2a-5ece-4f3c-96b7-7210959fbd4b)
-
 
 # Planned Features
 - API Request Management: Create, update, and manage HTTP requests, including support for authorization and authentication.
@@ -44,3 +41,13 @@ Execution:
 Structure:
 
 ![image](https://github.com/user-attachments/assets/8eb92d0f-65ce-4206-8ed6-b9ac1e75f8c9)
+
+Latest view (as of 2024-11-14)
+![image](https://github.com/user-attachments/assets/23b78cd0-9c76-45ee-a959-7ce4f050ae47)
+![image](https://github.com/user-attachments/assets/ebb23d32-26cb-4b20-833a-7a815789501a)
+![image](https://github.com/user-attachments/assets/fdd4f660-e193-4339-8549-0f23ea91098c)
+
+
+
+Latest view (as of 2024-11-08)
+![image](https://github.com/user-attachments/assets/3936bd2a-5ece-4f3c-96b7-7210959fbd4b)
