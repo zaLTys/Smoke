@@ -3,7 +3,7 @@ using Domain.Abstractions.Repositories;
 using Infrastructure.Repositories.InMemory;
 using Infrastructure.Services;
 using Microsoft.OpenApi.Models;
-using Web.Middleware;
+using WebApi.Middleware;
 
 namespace WebApi;
 

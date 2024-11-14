@@ -2,8 +2,7 @@
 using Domain.Exceptions.Base;
 using Newtonsoft.Json;
 
-
-namespace Web.Middleware;
+namespace WebApi.Middleware;
 
 internal sealed class ExceptionHandlingMiddleware : IMiddleware
 {

@@ -53,11 +53,9 @@ namespace UI.Components.Lists
             InvokeAsync(StateHasChanged);
         }
 
-        private void Clear()
+        private void NavigateToNewRequestPage()
         {
-            //TODO: remove HAX :( 
-            NavigationManager.NavigateTo("/", false);
-            NavigationManager.NavigateTo("/requests", false);    
+            NavigationManager.NavigateTo("/requests/new", false);    
         }
 
         protected override List<Task<IServiceResponse>> DataLoadRequests

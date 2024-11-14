@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 
+namespace WebApi.Middleware;
+
 public class CurlStringEscapeMiddleware
 {
     private readonly RequestDelegate _next;
@@ -13,7 +15,7 @@ public class CurlStringEscapeMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         if ((context.Request.Path == "/api/Requests/create" || context.Request.Path == "/api/Requests/testExecute")
-             && context.Request.Method == HttpMethods.Post)
+            && context.Request.Method == HttpMethods.Post)
         {
             // Read the original request body
             using var reader = new StreamReader(context.Request.Body);
