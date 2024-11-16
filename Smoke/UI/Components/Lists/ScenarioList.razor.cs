@@ -15,7 +15,7 @@ namespace UI.Components.Lists
         private NavigationManager NavigationManager { get; set; } = default!;
 
         [Parameter]
-        public EventCallback<ScenarioViewModel> OnScenarioSelected { get; set; }
+        public EventCallback<ScenarioViewModel> OnSelected { get; set; }
 
         public List<ScenarioViewModel> Scenarios { get; set; } = new List<ScenarioViewModel>();
 

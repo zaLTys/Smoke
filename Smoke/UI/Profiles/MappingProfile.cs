@@ -18,7 +18,7 @@ namespace UI.Profiles
             // Map from ApiRequestData (Generated Code) to ApiRequestDataViewModel
             CreateMap<ApiRequestData, ApiRequestDataViewModel>()
                 .ForMember(dest => dest.HttpMethod, opt => opt.MapFrom(src => src.HttpMethod.ToString()))
-                .ForMember(dest => dest.Headers, opt => opt.MapFrom(src => src.Headers.Select(kv => new HeaderViewModel (kv.Key,kv.Value)).ToList()));
+                .ForMember(dest => dest.Headers, opt => opt.MapFrom(src => src.Headers.Select(kv => new HeaderViewModel(kv.Key, kv.Value)).ToList()));
 
             // Map KeyValuePair to HeaderViewModel
             CreateMap<KeyValuePair<string, string>, HeaderViewModel>()
@@ -27,7 +27,7 @@ namespace UI.Profiles
 
             // Reverse mappings for ApiRequestViewModel to ApiRequest (Generated Code)
             CreateMap<ApiRequestViewModel, ApiRequest>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => Enum.Parse<StepType>(src.Type)))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => Enum.Parse<RequestType>(src.Type)))
                 .ForMember(dest => dest.ApiRequestData, opt => opt.MapFrom(src => src.ApiRequestData))
                 .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())    // Ignore CreatedDate
                 .ForMember(dest => dest.ModifiedDate, opt => opt.Ignore());  // Ignore ModifiedDate
@@ -37,16 +37,43 @@ namespace UI.Profiles
                 .ForMember(dest => dest.Headers, opt => opt.MapFrom(src => src.Headers.ToDictionary(h => h.Key, h => h.Value)));
 
 
-            CreateMap<Services.Base.Scenario, ScenarioViewModel>().ReverseMap();
+            // Map from Scenario to ScenarioViewModel
+            CreateMap<Scenario, ScenarioViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.Steps));
 
-            // Mapping between ScenarioContext and ScenarioContextViewModel
-            //CreateMap<ScenarioContext, ScenarioContextViewModel>().ReverseMap();
+            // Map from ScenarioViewModel to Scenario
+            CreateMap<ScenarioViewModel, Scenario>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.Steps))
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.ModifiedDate, opt => opt.Ignore());
 
-            // Mapping between ScenarioStep and ScenarioStepViewModel
-            CreateMap<Services.Base.ScenarioStep, ScenarioStepViewModel>().ReverseMap();
+            // Map from ScenarioStep to ScenarioStepViewModel
+            CreateMap<ScenarioStep, ScenarioStepViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.StepType, opt => opt.MapFrom(src => src.StepType))
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+                .ForMember(dest => dest.DependsOn, opt => opt.MapFrom(src => src.DependsOn))
+                .ForMember(dest => dest.Mappings, opt => opt.MapFrom(src => src.Mappings))
+                .ForMember(dest => dest.TimeOut, opt => opt.MapFrom(src => src.TimeOut))
+                .ForMember(dest => dest.DelayAfter, opt => opt.MapFrom(src => src.DelayAfter))
+                .ForMember(dest => dest.RequestName, opt => opt.Ignore()); // Assuming RequestName comes from elsewhere
 
-            // Mapping between ScenarioStepResult and ScenarioStepResultViewModel
-            CreateMap<Services.Base.ScenarioStepResult, ScenarioStepResultViewModel>().ReverseMap();
+            // Map from ScenarioStepViewModel to ScenarioStep
+            CreateMap<ScenarioStepViewModel, ScenarioStep>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.StepType, opt => opt.MapFrom(src => src.StepType))
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+                .ForMember(dest => dest.DependsOn, opt => opt.MapFrom(src => src.DependsOn))
+                .ForMember(dest => dest.Mappings, opt => opt.MapFrom(src => src.Mappings))
+                .ForMember(dest => dest.TimeOut, opt => opt.MapFrom(src => src.TimeOut))
+                .ForMember(dest => dest.DelayAfter, opt => opt.MapFrom(src => src.DelayAfter));
         }
     }
+
 }

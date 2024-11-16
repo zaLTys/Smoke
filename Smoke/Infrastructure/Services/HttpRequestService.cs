@@ -42,19 +42,19 @@ public class HttpRequestService : IHttpRequestService
             var isSuccess = response.IsSuccessStatusCode;
 
             return new RequestResult(
-                RequestId: httpRequest.Id,
-                Response: responseContent,
-                IsSuccess: isSuccess,
-                ErrorMessage: isSuccess ? string.Empty : response.ReasonPhrase ?? "Unknown error"
+                 httpRequest.Id,
+                 responseContent,
+                 isSuccess,
+                 isSuccess ? string.Empty : response.ReasonPhrase ?? "Unknown error"
             );
         }
         catch (Exception ex)
         {
             return new RequestResult(
-                RequestId: httpRequest.Id,
-                Response: string.Empty,
-                IsSuccess: false,
-                ErrorMessage: ex.Message
+                 httpRequest.Id,
+                 string.Empty,
+                 false,
+                 ex.Message
             );
         }
     }

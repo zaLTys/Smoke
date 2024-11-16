@@ -1,12 +1,10 @@
 ﻿using Blazored.Toast.Services;
-using Domain.Primitives;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
 using UI.Services;
-using UI.ViewModels.Requests;
 using UI.ViewModels.Scenarios;
 
 namespace UI.Components.Pages.Scenarios
@@ -22,12 +20,6 @@ namespace UI.Components.Pages.Scenarios
 
 
         public string ScenarioNameToRegister { get; set; } = string.Empty;
-        public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
-
-
-        public string Message { get; set; }
-        public string Output { get; set; } = string.Empty;
-        public ScenarioViewModel RegisteredScenario { get; set; } = new ScenarioViewModel();
 
         private MudDropContainer<ScenarioStepViewModel> _mudDropContainer;
         private List<ScenarioStepViewModel> ScenarioSteps { get; set; } = new();
@@ -41,114 +33,23 @@ namespace UI.Components.Pages.Scenarios
             }
             else
             {
-                if (!Requests.Any(x => x.Name.ToUpper() == ScenarioNameToRegister.ToUpper()))
+                var created = await ScenarioDataService.CreateScenario(ScenarioNameToRegister, Cts.Token);
+                if (created.Success)
                 {
-                    var created = await ScenarioDataService.CreateScenario(ScenarioNameToRegister, Cts.Token);
-                    if (created.Success)
-                    {
-                        ToastService.ShowSuccess("Scenario registered");
-                        RegisteredScenario = created.Data;
-                        StateChangeService.CallRequestRefresh();
-                        StateHasChanged();
-                    }
-                    else
-                    {
-                        ToastService.ShowError(created.Message ?? "Error occurred");
-                    }
+                    ToastService.ShowSuccess("Scenario registered");
+                    NavigateToEdit(created.Data);
                 }
                 else
                 {
-                    ToastService.ShowError("Request with that name already exists");
+                    ToastService.ShowError(created.Message ?? "Error occurred");
                 }
             }
         }
 
-        private async void Save()
+        private async void NavigateToEdit(ScenarioViewModel scenario)
         {
-            var saved = await ScenarioDataService.UpdateScenario(RegisteredScenario, Cts.Token);
-            if (saved.Success)
-            {
-                ToastService.ShowSuccess("Scenario registered");
-                RegisteredScenario = saved.Data;
-                StateHasChanged();
-            }
-
-            else
-            {
-                ToastService.ShowError(saved.Message ?? "Error occurred");
-            }
+            NavigationManager.NavigateTo($"/scenarios/{scenario.Id}");
         }
-
-
-
-        private void AddStep(ApiRequestViewModel request)
-        {
-            var newStep = new ScenarioStepViewModel
-            {
-                Id = Guid.NewGuid(),
-                StepType = Domain.Primitives.StepType.HttpRequest, // Ensure this enum value exists
-                RequestId = request.Id,
-                RequestName = request.Name,
-                Order = ScenarioSteps.Count + 1,
-                DependsOn = new List<Guid>(),
-                Mappings = new Dictionary<string, string>(),
-                TimeOut = null,
-                DelayAfter = null
-            };
-
-            ScenarioSteps.Add(newStep);
-            UpdateSteps();
-            RefreshContainer();
-        }
-
-        private void RemoveStep(ScenarioStepViewModel step)
-        {
-            ScenarioSteps.Remove(step);
-            UpdateSteps();
-            RefreshContainer();
-        }
-
-        private void UpdateSteps()
-        {
-            for (int i = 0; i < ScenarioSteps.Count; i++)
-            {
-                ScenarioSteps[i].Order = i + 1;
-            }
-            RegisteredScenario.Steps = ScenarioSteps;
-        }
-
-        private void OnDrop(MudItemDropInfo<ScenarioStepViewModel> dropItem)
-        {
-            var item = dropItem.Item;
-            var index = dropItem.IndexInZone;
-
-            if (item != null)
-            {
-                ScenarioSteps.Remove(item);
-                ScenarioSteps.Insert(index, item);
-                UpdateSteps();
-                RefreshContainer();
-            }
-        }
-
-        private void RefreshContainer()
-        {
-            StateHasChanged();
-            _mudDropContainer.Refresh();
-        }
-
-        private string GetIconForStepType(StepType stepType)
-        {
-            return stepType switch
-            {
-                StepType.HttpRequest => Icons.Material.Filled.Http,
-                StepType.AuthRequest => Icons.Material.Filled.Lock,
-                StepType.DbRequest => Icons.Material.Filled.Storage,
-                StepType.Wait => Icons.Material.Filled.HourglassEmpty,
-                _ => Icons.Material.Filled.HelpOutline
-            };
-        }
-
 
         protected override List<Task<IServiceResponse>> DataLoadRequests
         {

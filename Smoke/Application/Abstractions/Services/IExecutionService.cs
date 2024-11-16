@@ -4,6 +4,6 @@ namespace Application.Abstractions.Services
 {
     public interface IExecutionService
     {
-        Task<ExecutionResult> ExecuteScenarioAsync(Scenario scenario);
+        Task<ScenarioExecutionResult> ExecuteScenarioAsync(Scenario scenario);
     }
 }

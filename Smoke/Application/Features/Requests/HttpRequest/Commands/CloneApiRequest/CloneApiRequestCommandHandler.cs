@@ -23,13 +23,7 @@ internal sealed class CloneApiRequestCommandHandler : ICommandHandler<CloneApiRe
             throw new RequestNotFoundException(command.Id);
         }
 
-        var clonedRequest = apiRequest with
-        {
-            Id = Guid.NewGuid(),
-            CreatedDate = DateTime.UtcNow,
-            ModifiedDate = DateTime.UtcNow,
-            Name = apiRequest.Name + " - Clone"
-        };
+        var clonedRequest = new ApiRequest(Guid.NewGuid(), apiRequest.Name + " - Clone", apiRequest.ApiRequestData, DateTime.UtcNow, DateTime.UtcNow, apiRequest.Type);
 
         return _requestRepository.Create(clonedRequest);
     }

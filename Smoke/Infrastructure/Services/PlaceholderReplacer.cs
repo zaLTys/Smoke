@@ -15,16 +15,16 @@ namespace Infrastructure.Services
             var updatedBody = ReplacePlaceholdersInString(requestData.Body, sharedData);
             var updatedExpectedResponse = ReplacePlaceholdersInObject(requestData.ExpectedResponse, sharedData);
 
-            var updatedRequestData = requestData with
-            {
-                Url = updatedUrl,
-                Headers = updatedHeaders,
-                Body = updatedBody,
-                ExpectedResponse = updatedExpectedResponse
-            };
+            requestData.Url = updatedUrl;
+            requestData.Headers = updatedHeaders;
+            requestData.Body = updatedBody;
+            requestData.ExpectedResponse = updatedExpectedResponse;
 
-            return apiRequest with { ApiRequestData = updatedRequestData };
+            apiRequest.ApiRequestData = requestData;
+
+            return apiRequest;
         }
+
 
         private string ReplacePlaceholdersInString(string input, IDictionary<string, string> parameters)
         {

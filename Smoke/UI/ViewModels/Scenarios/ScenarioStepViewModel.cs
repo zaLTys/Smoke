@@ -5,7 +5,7 @@ namespace UI.ViewModels.Scenarios
     public class ScenarioStepViewModel
     {
         public Guid Id { get; set; }
-        public StepType StepType { get; set; }
+        public RequestType StepType { get; set; }
         public Guid RequestId { get; set; }
         public string RequestName { get; set; } = string.Empty;
         public int Order { get; set; }

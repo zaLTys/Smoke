@@ -29,7 +29,7 @@
                                 <MudList T="ApiRequestViewModel">
                                     @foreach (var request in FilteredRequests)
                                     {
-                                        <MudListItem OnClick="@(() => OnRequestSelected.InvokeAsync(request))">
+                                        <MudListItem OnClick="@(() => OnSelected.InvokeAsync(request))">
                                             @request.Name
                                         </MudListItem>
                                     }

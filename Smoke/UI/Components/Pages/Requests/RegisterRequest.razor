@@ -71,8 +71,13 @@
             </MudItem>
 
             <MudItem xs="4" sm="4" md="4" lg="4">
-                <UI.Components.Lists.ApiRequestList OnRequestSelected="NavigateToEdit">
+                <UI.Components.Lists.ApiRequestList OnSelected="NavigateToRequest">
                 </UI.Components.Lists.ApiRequestList>
+            </MudItem>
+            <MudItem xs="4" sm="4" md="4" lg="4">
+                <UI.Components.Lists.ScenarioList OnSelected="NavigateToScenario">
+
+                </UI.Components.Lists.ScenarioList>
             </MudItem>
         </MudGrid>
     </MudContainer>

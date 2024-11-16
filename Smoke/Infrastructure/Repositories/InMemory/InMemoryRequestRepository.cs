@@ -41,23 +41,17 @@ namespace Infrastructure.Repositories.InMemory
         {
             if (_requests.TryGetValue(request.Id, out var existingRequest))
             {
-                var updatedRequestData = existingRequest.ApiRequestData with
-                {
-                    HttpMethod = request.ApiRequestData.HttpMethod,
-                    Url = request.ApiRequestData.Url ?? existingRequest.ApiRequestData.Url,
-                    Headers = request.ApiRequestData.Headers ?? existingRequest.ApiRequestData.Headers,
-                    Body = request.ApiRequestData.Body ?? existingRequest.ApiRequestData.Body,
-                    ExpectedResponse = request.ApiRequestData.ExpectedResponse ?? existingRequest.ApiRequestData.ExpectedResponse
-                };
+                var updatedRequestData = new ApiRequestData(
+                     request.ApiRequestData.HttpMethod,
+                     request.ApiRequestData.Url ?? existingRequest.ApiRequestData.Url,
+                     request.ApiRequestData.Headers ?? existingRequest.ApiRequestData.Headers,
+                     request.ApiRequestData.Body ?? existingRequest.ApiRequestData.Body,
+                     request.ApiRequestData.ExpectedResponse ?? existingRequest.ApiRequestData.ExpectedResponse);
 
-                var updatedRequest = existingRequest with
-                {
-                    Name = request.Name ?? existingRequest.Name,
-                    ApiRequestData = updatedRequestData,
-                    ModifiedDate = DateTime.UtcNow
-                };
+                existingRequest.Name = request.Name ?? existingRequest.Name;
+                existingRequest.ApiRequestData = updatedRequestData;
+                existingRequest.ModifiedDate = DateTime.UtcNow;
 
-                _requests[request.Id] = updatedRequest;
                 return _requests[request.Id];
             }
 

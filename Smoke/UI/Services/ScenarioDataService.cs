@@ -1,9 +1,9 @@
-﻿using Application.Features.Requests.HttpRequest.Commands.CreateApiRequest;
-using AutoMapper;
+﻿using AutoMapper;
 using Blazored.LocalStorage;
 using UI.Contracts;
 using UI.Responses;
 using UI.Services.Base;
+using UI.ViewModels.Requests;
 using UI.ViewModels.Scenarios;
 
 namespace UI.Services
@@ -58,12 +58,12 @@ namespace UI.Services
             return ServiceResponse<List<ScenarioViewModel>>.FromData(mappedList);
         }
 
-        //public async Task<ServiceResponse<bool>> DeleteScenario(Guid scenarioId, CancellationToken cancellationToken)
-        //{
-        //    // Assuming there is a client method to delete a scenario
-        //    await _client.ApiScenariosDeleteAsync(scenarioId, cancellationToken);
-        //    return ServiceResponse<bool>.FromData(true);
-        //}
+        public async Task<ServiceResponse<ScenarioViewModel>> GetScenarioById(Guid scenarioId, CancellationToken cancellationToken)
+        {
+            var response = await _client.ApiScenariosAsync(scenarioId, cancellationToken);
+            var mappedElement = _mapper.Map<ScenarioViewModel>(response);
+            return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
+        }
     }
 
 }

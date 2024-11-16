@@ -6,7 +6,7 @@ using Domain.Exceptions;
 
 namespace Application.Features.Requests.HttpRequest.Commands.ExecuteHttpRequest;
 
-internal sealed class ExecuteScenarioCommandHandler : ICommandHandler<ExecuteScenarioCommand, ExecutionResult>
+internal sealed class ExecuteScenarioCommandHandler : ICommandHandler<ExecuteScenarioCommand, ScenarioExecutionResult>
 {
     private readonly IScenarioRepository _scenarioRepository;
     private readonly IExecutionService _executionService;
@@ -18,7 +18,7 @@ internal sealed class ExecuteScenarioCommandHandler : ICommandHandler<ExecuteSce
     }
 
 
-    public async Task<ExecutionResult> Handle(ExecuteScenarioCommand command, CancellationToken cancellationToken)
+    public async Task<ScenarioExecutionResult> Handle(ExecuteScenarioCommand command, CancellationToken cancellationToken)
     {
         var scenario = _scenarioRepository.GetById(command.ScenarioId);
         if (scenario == null)

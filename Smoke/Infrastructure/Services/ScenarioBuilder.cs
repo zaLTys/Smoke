@@ -10,7 +10,7 @@ namespace Infrastructure.Services
 
         public IScenarioBuilder AddStep(
             Guid requestId,
-            StepType stepType,
+            RequestType requestType,
             int order,
             List<Guid> dependsOn,
             Dictionary<string, string> mappings = null,
@@ -19,14 +19,14 @@ namespace Infrastructure.Services
         {
             var step = new ScenarioStep
             (
-                Id: Guid.NewGuid(),
-                RequestId: requestId,
-                StepType: stepType,
-                Order: order,
-                DependsOn: dependsOn ?? new List<Guid>(),
-                Mappings: mappings ?? new Dictionary<string, string>(),
-                TimeOut: timeout,
-                DelayAfter: delayAfter
+                 Guid.NewGuid(),
+                 requestType,
+                 requestId,
+                 order,
+                 dependsOn ?? new List<Guid>(),
+                 mappings ?? new Dictionary<string, string>(),
+                 timeout,
+                 delayAfter
             );
 
             _steps.Add(step);
@@ -38,11 +38,11 @@ namespace Infrastructure.Services
             _name = name;
             return new Scenario
             (
-                Id: Guid.NewGuid(),
-                Name: _name,
-                Steps: _steps.OrderBy(s => s.Order).ToList(),
-                CreatedDate: DateTime.UtcNow,
-                ModifiedDate: DateTime.UtcNow
+                 Guid.NewGuid(),
+                 _name,
+                 _steps.OrderBy(s => s.Order).ToList(),
+                 DateTime.UtcNow,
+                 DateTime.UtcNow
             );
         }
 

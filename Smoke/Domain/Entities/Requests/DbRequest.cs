@@ -2,23 +2,24 @@
 
 namespace Domain.Entities.Requests
 {
-    public record DbRequest
-    (
-        Guid Id,
-        string Name,
-        DbRequestData DbRequestData,
-        DateTime CreatedDate,
-        DateTime ModifiedDate,
-        StepType Type = StepType.DbRequest
-    );
+    public class DbRequest
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public DbRequestData DbRequestData { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
+        public RequestType Type { get; set; }
 
-    public record DbRequestData
-(
-    DbType DbType,
-    string ConnectionString,
-    string Query,
-    Dictionary<string, object> Parameters,
-    object ExpectedResult
-);
+        public DbRequest(Guid id, string name, DbRequestData dbRequestData, DateTime createdDate, DateTime modifiedDate, RequestType type = RequestType.DbRequest)
+        {
+            Id = id;
+            Name = name;
+            DbRequestData = dbRequestData;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            Type = type;
+        }
+    }
 
 }

@@ -100,21 +100,9 @@ public class CurlParserService : ICurlParserService
             throw new ArgumentException("Invalid curl command: URL not found.");
         }
 
-        var apiRequestData = new ApiRequestData(
-            HttpMethod: method,
-            Url: url,
-            Headers: headers,
-            Body: body,
-            ExpectedResponse: null
-        );
+        var apiRequestData = new ApiRequestData(method, url, headers, body, null);
 
-        return new ApiRequest(
-            Id: Guid.NewGuid(),
-            Name: name,
-            ApiRequestData: apiRequestData,
-            CreatedDate: DateTime.UtcNow,
-            ModifiedDate: DateTime.UtcNow
-        );
+        return new ApiRequest(Guid.NewGuid(), name, apiRequestData, DateTime.UtcNow, DateTime.UtcNow);
     }
 
     private List<string> Tokenize(string input)

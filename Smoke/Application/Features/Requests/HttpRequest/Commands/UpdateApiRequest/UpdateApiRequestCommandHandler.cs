@@ -22,21 +22,14 @@ internal sealed class UpdateApiRequestCommandHandler : ICommandHandler<UpdateApi
             throw new RequestNotFoundException(command.request.Id);
         }
 
-        var updatedRequestData = apiRequest.ApiRequestData with
-        {
-            HttpMethod = command.request.ApiRequestData.HttpMethod,
-            Url = command.request.ApiRequestData.Url,
-            Headers = command.request.ApiRequestData.Headers,
-            Body = command.request.ApiRequestData.Body,
-            ExpectedResponse = command.request.ApiRequestData.ExpectedResponse
-        };
+        apiRequest.ApiRequestData.HttpMethod = command.request.ApiRequestData.HttpMethod;
+        apiRequest.ApiRequestData.Url = command.request.ApiRequestData.Url;
+        apiRequest.ApiRequestData.Headers = command.request.ApiRequestData.Headers;
+        apiRequest.ApiRequestData.Body = command.request.ApiRequestData.Body;
+        apiRequest.ApiRequestData.ExpectedResponse = command.request.ApiRequestData.ExpectedResponse;
 
-        apiRequest = apiRequest with
-        {
-            Name = command.request.Name,
-            ApiRequestData = updatedRequestData,
-            ModifiedDate = DateTime.UtcNow
-        };
+        apiRequest.Name = command.request.Name;
+        apiRequest.ModifiedDate = DateTime.UtcNow;
 
         _requestRepository.Update(apiRequest);
         return apiRequest;

@@ -21,7 +21,7 @@
                                 <MudList T="ScenarioViewModel">
                                     @foreach (var scenario in FilteredScenarios)
                                     {
-                                        <MudListItem OnClick="@(() => OnScenarioSelected.InvokeAsync(scenario))">
+                                        <MudListItem OnClick="@(() => OnSelected.InvokeAsync(scenario))">
                                             @scenario.Name, (@scenario.Steps.Count) steps
                                         </MudListItem>
                                     }

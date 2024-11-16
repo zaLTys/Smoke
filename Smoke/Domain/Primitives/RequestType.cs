@@ -1,6 +1,6 @@
 ﻿namespace Domain.Primitives
 {
-    public enum StepType
+    public enum RequestType
     {
         HttpRequest,
         AuthRequest,

@@ -19,7 +19,7 @@ public class ExecutionService : IExecutionService
         _placeholderReplacer = placeholderReplacer;
     }
 
-    public async Task<ExecutionResult> ExecuteScenarioAsync(Scenario scenario)
+    public async Task<ScenarioExecutionResult> ExecuteScenarioAsync(Scenario scenario)
     {
         var startTime = DateTime.UtcNow;
         var stepResults = new ConcurrentDictionary<Guid, ScenarioStepResult>();
@@ -47,13 +47,13 @@ public class ExecutionService : IExecutionService
         var isSuccess = stepResults.Values.All(sr => sr.IsSuccess);
         var endTime = DateTime.UtcNow;
 
-        return new ExecutionResult(
-            ScenarioId: scenario.Id,
-            StepResults: stepResults.Values.ToList(),
-            StartTime: startTime,
-            EndTime: endTime,
-            IsSuccess: isSuccess,
-            Logs: logs.ToString()
+        return new ScenarioExecutionResult(
+             scenario.Id,
+             stepResults.Values.ToList(),
+             startTime,
+             endTime,
+             isSuccess,
+             logs.ToString()
         );
     }
 
@@ -90,13 +90,7 @@ public class ExecutionService : IExecutionService
                 sharedData[output.Key] = output.Value;
             }
 
-            var stepResult = new ScenarioStepResult(
-                StepId: step.Id,
-                Response: result.Response,
-                IsSuccess: result.IsSuccess,
-                ErrorMessage: result.ErrorMessage,
-                OutputData: outputData
-            );
+            var stepResult = new ScenarioStepResult(step.Id, result.Response, result.IsSuccess, result.ErrorMessage, outputData);
 
             logs.AppendLine($"Step {step.Order} {apiRequest.Name} executed successfully: {result.IsSuccess}");
 
@@ -113,13 +107,7 @@ public class ExecutionService : IExecutionService
 
             logs.AppendLine(errorMessage);
 
-            return new ScenarioStepResult(
-                StepId: step.Id,
-                Response: null,
-                IsSuccess: false,
-                ErrorMessage: errorMessage,
-                OutputData: new Dictionary<string, string>()
-            );
+            return new ScenarioStepResult(step.Id, null, false, errorMessage, new Dictionary<string, string>());
         }
         catch (Exception ex)
         {
@@ -127,13 +115,7 @@ public class ExecutionService : IExecutionService
 
             logs.AppendLine(errorMessage);
 
-            return new ScenarioStepResult(
-                StepId: step.Id,
-                Response: null,
-                IsSuccess: false,
-                ErrorMessage: errorMessage,
-                OutputData: new Dictionary<string, string>()
-            );
+            return new ScenarioStepResult(step.Id, null, false, errorMessage, new Dictionary<string, string>());
         }
     }
 

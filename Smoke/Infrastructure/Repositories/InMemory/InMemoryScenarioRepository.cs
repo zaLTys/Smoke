@@ -42,37 +42,14 @@ namespace Infrastructure.Repositories.InMemory
         {
             if (_scenarios.TryGetValue(scenario.Id, out var existingScenario))
             {
-                var updatedScenario = existingScenario with
-                {
-                    Name = scenario.Name ?? existingScenario.Name,
-                    Steps = scenario.Steps ?? existingScenario.Steps,
-                    ModifiedDate = DateTime.UtcNow
-                };
+                existingScenario.Name = scenario.Name ?? existingScenario.Name;
+                existingScenario.Steps = scenario.Steps ?? existingScenario.Steps;
+                existingScenario.ModifiedDate = DateTime.UtcNow;
 
-                _scenarios[scenario.Id] = updatedScenario;
-                return _scenarios[scenario.Id];
+                return existingScenario;
             }
 
             throw new KeyNotFoundException("No scenario with the specified ID was found.");
-        }
-
-        public Scenario UpdateScenario(Guid scenarioId, Scenario scenario)
-        {
-            if (_scenarios.TryGetValue(scenarioId, out var existingScenario))
-            {
-                var updatedScenario = existingScenario with
-                {
-                    ModifiedDate = DateTime.UtcNow,
-                    Steps = scenario.Steps,
-                    Name = scenario.Name ?? existingScenario.Name,
-                };
-
-                _scenarios[scenarioId] = updatedScenario;
-                return _scenarios[scenarioId];
-            }
-
-            throw new KeyNotFoundException("No scenario with the specified ID was found.");
-
         }
     }
 

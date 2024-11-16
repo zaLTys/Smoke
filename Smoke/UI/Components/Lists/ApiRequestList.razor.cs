@@ -19,7 +19,7 @@ namespace UI.Components.Lists
         private IStateChangeService StateChangeService { get; set; } = default!;
 
         [Parameter]
-        public EventCallback<ApiRequestViewModel> OnRequestSelected { get; set; }
+        public EventCallback<ApiRequestViewModel> OnSelected { get; set; }
 
         public List<ApiRequestViewModel> Requests { get; set; } = new List<ApiRequestViewModel>();
 

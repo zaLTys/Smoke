@@ -26,7 +26,7 @@ public sealed class ScenariosController : ApiController
     }
 
     [HttpGet("execute")]
-    [ProducesResponseType(typeof(ExecutionResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ScenarioExecutionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ExecuteScenario(
     [FromQuery] Guid id,
@@ -51,7 +51,7 @@ public sealed class ScenariosController : ApiController
     [HttpGet("{id:Guid}")]
     [ProducesResponseType(typeof(Scenario), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetScenarioRequest(
+    public async Task<IActionResult> GetScenario(
         Guid id,
     CancellationToken cancellationToken)
     {

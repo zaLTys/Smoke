@@ -6,6 +6,7 @@ using UI.Contracts;
 using UI.Responses;
 using UI.Services.Base;
 using UI.ViewModels.Requests;
+using UI.ViewModels.Scenarios;
 
 namespace UI.Components.Pages.Requests
 {
@@ -19,7 +20,6 @@ namespace UI.Components.Pages.Requests
 
         [Inject] NavigationManager NavigationManager { get; set; }
 
-        public string Message { get; set; }
         public string Output { get; set; } = string.Empty;
         public ApiRequestViewModel ApiRequest { get; set; } = null;
 
@@ -41,7 +41,7 @@ namespace UI.Components.Pages.Requests
                     if (created.Success)
                     {
                         ToastService.ShowSuccess("Request registered");
-                        NavigateToEdit(created.Data);
+                        NavigateToRequest(created.Data);
                     }
                 }
                 else
@@ -51,9 +51,14 @@ namespace UI.Components.Pages.Requests
             }
         }
 
-        private async void NavigateToEdit(ApiRequestViewModel request)
+        private async void NavigateToRequest(ApiRequestViewModel request)
         {
             NavigationManager.NavigateTo($"/requests/{request.Id}");
+        }
+
+        private async void NavigateToScenario(ScenarioViewModel scenario)
+        {
+            NavigationManager.NavigateTo($"/scenarios/{scenario.Id}");
         }
 
         protected async void Execute()

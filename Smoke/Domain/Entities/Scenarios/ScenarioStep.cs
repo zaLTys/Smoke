@@ -2,30 +2,41 @@
 
 namespace Domain.Entities.Scenarios
 {
-    public record ScenarioStep
-    (
-        Guid Id,
-        StepType StepType,
-        Guid RequestId,
-        int Order,
-        List<Guid> DependsOn,
-        Dictionary<string, string> Mappings,
-        TimeSpan? TimeOut,
-        TimeSpan? DelayAfter
-    )
+    public class ScenarioStep
     {
+        public Guid Id { get; set; }
+        public RequestType StepType { get; set; }
+        public Guid RequestId { get; set; }
+        public int Order { get; set; }
+        public List<Guid> DependsOn { get; set; }
+        public Dictionary<string, string> Mappings { get; set; }
+        public TimeSpan? TimeOut { get; set; }
+        public TimeSpan? DelayAfter { get; set; }
+
+        public ScenarioStep(Guid id, RequestType stepType, Guid requestId, int order, List<Guid> dependsOn, Dictionary<string, string> mappings, TimeSpan? timeOut, TimeSpan? delayAfter)
+        {
+            Id = id;
+            StepType = stepType;
+            RequestId = requestId;
+            Order = order;
+            DependsOn = dependsOn;
+            Mappings = mappings;
+            TimeOut = timeOut;
+            DelayAfter = delayAfter;
+        }
+
         public static ScenarioStep Default(Guid requestId, int order)
         {
             return new ScenarioStep(
-                Id: Guid.NewGuid(),
-                StepType: StepType.HttpRequest,
-                RequestId: requestId,
-                Order: order,
-                DependsOn: new List<Guid>(),
-                Mappings: new Dictionary<string, string>(),
-                TimeOut: null,
-                DelayAfter: null
-                );
+                Guid.NewGuid(),
+                RequestType.HttpRequest,
+                requestId,
+                order,
+                new List<Guid>(),
+                new Dictionary<string, string>(),
+                null,
+                null
+            );
         }
     }
 

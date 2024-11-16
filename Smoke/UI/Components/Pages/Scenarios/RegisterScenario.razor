@@ -1,4 +1,4 @@
-﻿@page "/scenario"
+﻿@page "/scenarios/new"
 @using UI.Components.Loader
 @using UI.ViewModels.Scenarios
 @inherits DataLoader
@@ -33,71 +33,12 @@
 
                     </MudGrid>
                 </MudPaper>
-                <MudPaper Class="pa-4 my-2" Style="width:100%;">
-                    <MudText Typo="Typo.h6">Registered Scenario</MudText>
-                    <MudGrid>
-                        <MudItem xs="12">
-                            <MudTextField Label="Id" @bind-Value="RegisteredScenario.Id" ReadOnly="true" Variant="Variant.Outlined" />
-                        </MudItem>
-                        <MudItem xs="6">
-                            <MudTextField Label="Name" @bind-Value="RegisteredScenario.Name" Variant="Variant.Outlined" />
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.h6" Class="mb-4">Steps</MudText>
-                            <MudDropContainer T="ScenarioStepViewModel" Items="ScenarioSteps" @ref="_mudDropContainer" ItemsSelector="@((item, dropzone) => true)" ItemDropped="OnDrop" Class="d-flex flex-wrap flex-grow-1">
-                                <ChildContent>
-                                    <MudDropZone T="ScenarioStepViewModel" Identifier="Drop Zone 1" Class="rounded mud-background-gray pa-6 ma-8 flex-grow-1" AllowReorder="true">
-                                    </MudDropZone>
-                                </ChildContent>
-                                <ItemRenderer>
-                                    <MudPaper Class="d-flex align-center justify-center ma-1" Elevation="1">
-                                        <MudItem xs="1" sm="1" md="1" lg="1">
-                                            <MudText>@context.Order</MudText>
-                                        </MudItem>
-                                        <MudItem xs="1" sm="1" md="1" lg="1">
-                                            <MudIcon Icon="@GetIconForStepType(context.StepType)" Size="Size.Large"/>
-                                        </MudItem>
-                                        <MudItem xs="3" sm="3" md="3" lg="3">
-                                            <MudText>@context.RequestName</MudText>
-                                        </MudItem>
-                                        <MudItem xs="4" sm="2" md="2" lg="2" Class="">
-                                            <MudTextField @bind-Value="context.TimeOut" Variant="Variant.Text" Label="Timeout, s" />
-                                        </MudItem>
-                                        <MudItem xs="4" sm="2" md="2" lg="2">
-                                                <MudTextField @bind-Value="context.DelayAfter" Variant="Variant.Text" Label="DelayAfter, s" />
-                                        </MudItem>
-                                        <MudItem>
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="(() => RemoveStep(context))" Ripple="false" />
-                                        </MudItem>
-                                    </MudPaper>
-                                </ItemRenderer>
-                            </MudDropContainer>
-                        </MudItem>
-
-                        <MudItem xs="6">
-                            <MudButton Variant="Variant.Outlined"
-                                       ButtonType="ButtonType.Submit"
-                                       StartIcon="@Icons.Material.Filled.Save"
-                                       DisableElevation="true"
-                                       Size="Size.Small"
-                                       Style="background-color: white;"
-                                       Color="Color.Primary"
-                                       OnClick="Save">
-                                Save
-                            </MudButton>
-                        </MudItem>
-                    </MudGrid>
-                </MudPaper>
             </MudItem>
 
             <MudItem xs="4" sm="4" md="4" lg="4">
-                <UI.Components.Lists.ApiRequestList OnRequestSelected="AddStep">
-                </UI.Components.Lists.ApiRequestList>
-                
-            </MudItem>
-            <MudItem xs="4" sm="4" md="4" lg="4">
-                <UI.Components.Lists.ScenarioList></UI.Components.Lists.ScenarioList>
+                <UI.Components.Lists.ScenarioList OnSelected="NavigateToEdit">
+
+                </UI.Components.Lists.ScenarioList>
             </MudItem>
         </MudGrid>
     </MudContainer>
