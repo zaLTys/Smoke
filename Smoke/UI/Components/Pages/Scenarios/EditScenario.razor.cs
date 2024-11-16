@@ -2,6 +2,7 @@
 using Domain.Primitives;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Newtonsoft.Json;
 using UI.Components.Loader;
 using UI.Contracts;
 using UI.Responses;
@@ -119,6 +120,24 @@ namespace UI.Components.Pages.Scenarios
                 RequestType.Wait => Icons.Material.Filled.HourglassEmpty,
                 _ => Icons.Material.Filled.HelpOutline
             };
+        }
+
+        protected async void Execute()
+        {
+            var response = await ScenarioDataService.ExecuteScenario(Scenario.Id, Cts.Token);
+            if (response.Data.IsSuccess)
+            {
+                ToastService.ShowSuccess("Executed successfully");
+                Output = JsonConvert.SerializeObject(response.Data, Formatting.Indented);
+                StateHasChanged();
+            }
+            else
+            {
+                ToastService.ShowError(response.Message);
+                ErrorMessage = response.Message;
+                Output = response.Message;
+                StateHasChanged();
+            }
         }
 
 

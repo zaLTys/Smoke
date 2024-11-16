@@ -1,3 +1,3 @@
 ﻿namespace Application.Features.SellerInventory.SellerDeals.Commands.CreateDeal;
 
-public sealed record ExecuteScenarioRequest(Guid scenarioId);
+public sealed record ExecuteScenarioRequest(Guid ScenarioId);

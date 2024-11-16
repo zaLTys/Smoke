@@ -73,6 +73,40 @@ namespace UI.Profiles
                 .ForMember(dest => dest.Mappings, opt => opt.MapFrom(src => src.Mappings))
                 .ForMember(dest => dest.TimeOut, opt => opt.MapFrom(src => src.TimeOut))
                 .ForMember(dest => dest.DelayAfter, opt => opt.MapFrom(src => src.DelayAfter));
+
+            // Map from ScenarioExecutionResult to ScenarioExecutionResultViewModel
+            CreateMap<ScenarioExecutionResult, ScenarioExecutionResultViewModel>()
+                .ForMember(dest => dest.ScenarioId, opt => opt.MapFrom(src => src.ScenarioId))
+                .ForMember(dest => dest.StepResults, opt => opt.MapFrom(src => src.StepResults))
+                .ForMember(dest => dest.StartTime, opt => opt.Ignore())
+                .ForMember(dest => dest.EndTime, opt => opt.Ignore())
+                .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.Logs, opt => opt.MapFrom(src => src.Logs));
+
+            // Map from ScenarioExecutionResultViewModel to ScenarioExecutionResult
+            CreateMap<ScenarioExecutionResultViewModel, ScenarioExecutionResult>()
+                .ForMember(dest => dest.ScenarioId, opt => opt.MapFrom(src => src.ScenarioId))
+                .ForMember(dest => dest.StepResults, opt => opt.MapFrom(src => src.StepResults))
+                .ForMember(dest => dest.StartTime, opt => opt.Ignore())
+                .ForMember(dest => dest.EndTime, opt => opt.Ignore())
+                .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.Logs, opt => opt.MapFrom(src => src.Logs));
+
+            // Map from ScenarioStepResult to ScenarioStepResultViewModel
+            CreateMap<ScenarioStepResult, ScenarioStepResultViewModel>()
+                .ForMember(dest => dest.StepId, opt => opt.MapFrom(src => src.StepId))
+                .ForMember(dest => dest.Response, opt => opt.MapFrom(src => src.Response))
+                .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.ErrorMessage, opt => opt.MapFrom(src => src.ErrorMessage))
+                .ForMember(dest => dest.OutputData, opt => opt.MapFrom(src => src.OutputData));
+
+            // Map from ScenarioStepResultViewModel to ScenarioStepResult
+            CreateMap<ScenarioStepResultViewModel, ScenarioStepResult>()
+                .ForMember(dest => dest.StepId, opt => opt.MapFrom(src => src.StepId))
+                .ForMember(dest => dest.Response, opt => opt.MapFrom(src => src.Response))
+                .ForMember(dest => dest.IsSuccess, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.ErrorMessage, opt => opt.MapFrom(src => src.ErrorMessage))
+                .ForMember(dest => dest.OutputData, opt => opt.MapFrom(src => src.OutputData));
         }
     }
 

@@ -3,7 +3,6 @@ using Blazored.LocalStorage;
 using UI.Contracts;
 using UI.Responses;
 using UI.Services.Base;
-using UI.ViewModels.Requests;
 using UI.ViewModels.Scenarios;
 
 namespace UI.Services
@@ -43,13 +42,6 @@ namespace UI.Services
             return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
         }
 
-        public async Task<ServiceResponse<ScenarioViewModel>> GetScenario(Guid scenarioId, CancellationToken cancellationToken)
-        {
-            var response = await _client.ApiScenariosAsync(scenarioId, cancellationToken);
-            var mappedElement = _mapper.Map<ScenarioViewModel>(response);
-            return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
-        }
-
         public async Task<ServiceResponse<List<ScenarioViewModel>>> GetAllScenarios(CancellationToken cancellationToken)
         {
             // Assuming there is a client method to get all scenarios
@@ -63,6 +55,13 @@ namespace UI.Services
             var response = await _client.ApiScenariosAsync(scenarioId, cancellationToken);
             var mappedElement = _mapper.Map<ScenarioViewModel>(response);
             return ServiceResponse<ScenarioViewModel>.FromData(mappedElement);
+        }
+
+        public async Task<ServiceResponse<ScenarioExecutionResultViewModel>> ExecuteScenario(Guid scenarioId, CancellationToken cancellationToken)
+        {
+            var response = await _client.ApiScenariosExecuteAsync(scenarioId, cancellationToken);
+            var mappedElement = _mapper.Map<ScenarioExecutionResultViewModel>(response);
+            return ServiceResponse<ScenarioExecutionResultViewModel>.FromData(mappedElement);
         }
     }
 

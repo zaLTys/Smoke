@@ -8,9 +8,5 @@
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }
         public Dictionary<string, string> OutputData { get; set; }
-
-        public ScenarioStepResultViewModel()
-        {
-        }
     }
 }
