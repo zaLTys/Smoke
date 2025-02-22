@@ -10,6 +10,7 @@ namespace Infrastructure.Services
 
         public IScenarioBuilder AddStep(
             Guid requestId,
+            string requestName,
             RequestType requestType,
             int order,
             List<Guid> dependsOn,
@@ -22,12 +23,12 @@ namespace Infrastructure.Services
                  Guid.NewGuid(),
                  requestType,
                  requestId,
+                 requestName,
                  order,
                  dependsOn ?? new List<Guid>(),
                  mappings ?? new Dictionary<string, string>(),
                  timeout,
-                 delayAfter
-            );
+                 delayAfter);
 
             _steps.Add(step);
             return this;

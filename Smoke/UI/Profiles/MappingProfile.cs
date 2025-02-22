@@ -56,12 +56,12 @@ namespace UI.Profiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.StepType, opt => opt.MapFrom(src => src.StepType))
                 .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(dest => dest.RequestName, opt => opt.MapFrom(src => src.RequestName))
                 .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
                 .ForMember(dest => dest.DependsOn, opt => opt.MapFrom(src => src.DependsOn))
                 .ForMember(dest => dest.Mappings, opt => opt.MapFrom(src => src.Mappings))
                 .ForMember(dest => dest.TimeOut, opt => opt.MapFrom(src => src.TimeOut))
-                .ForMember(dest => dest.DelayAfter, opt => opt.MapFrom(src => src.DelayAfter))
-                .ForMember(dest => dest.RequestName, opt => opt.Ignore()); // Assuming RequestName comes from elsewhere
+                .ForMember(dest => dest.DelayAfter, opt => opt.MapFrom(src => src.DelayAfter));
 
             // Map from ScenarioStepViewModel to ScenarioStep
             CreateMap<ScenarioStepViewModel, ScenarioStep>()
